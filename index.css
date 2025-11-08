@@ -791,12 +791,6 @@ footer {
   padding: 4rem 2rem 1rem;
   position: relative;
 }
-.footer-content{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);   /* force 4 columns */
-  gap:2rem;
-}
-
 
 body:has(#home.active) footer {
   display: none;
@@ -937,11 +931,6 @@ body:has(#home.active) footer {
     background-color: #c30000;
     color: #fff;
 }
-.footer-content{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);   /* force 4 columns */
-  gap:2rem;
-}
 
 
 
@@ -954,6 +943,10 @@ body:has(#home.active) footer {
   nav ul {
     gap: 1rem;
   }
+  nav ul {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
   .service-feature-item {
     grid-template-columns: 1fr;
     text-align: center;
@@ -995,6 +988,15 @@ body:has(#home.active) footer {
     }
 
     .logo { display: flex; align-items: center; }
+    
+    nav ul{
+      will-change: transform, opacity;
+      transform: translateY(-20px);
+    }
+
+    nav ul.nav-active{
+      transform: translateY(0);
+    }
 
     nav ul {
         position: fixed;
