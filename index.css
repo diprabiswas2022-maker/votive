@@ -4,7 +4,7 @@
 */
 
 :root {
-  --background-color: #071021; /* deep navy */
+  --background-color: #000000; /* Pure black to match logo theme */
   --text-color: #eef6fb;       /* very light cyan/white */
   --primary-color: #1b88c9;    /* vivid logo blue (main) */
   --accent-color: #e11b23;     /* logo red (triangles/accents) */
@@ -12,7 +12,7 @@
   --card-background: #0f1b28;  /* slightly lighter than background */
   --border-color: rgba(238,246,251,0.06);
   --hover-border-color: rgba(238,246,251,0.18);
-  --header-height: 92px; /* Increased for bigger logo */
+  --header-height: 80px; /* Standard height */
 }
 
 /* --- Base & Reset --- */
@@ -133,26 +133,41 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
   height: var(--header-height);
   z-index: 1000;
+  
+  /* Visual styling moved to ::before to avoid containing block issues for fixed children */
+  background-color: transparent;
+  border-bottom: none;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-bottom 0.3s ease;
 }
 
-header.scrolled {
-  background-color: rgba(7,16,33,0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-color);
-}
-
-header.scrolled.menu-is-open {
+/* Special Case: Home Page at the top */
+body:has(#home.active) header:not(.scrolled)::before {
   background-color: transparent;
   backdrop-filter: none;
-  border-bottom: none;
+  border-bottom: 1px solid transparent;
+}
+
+header.scrolled::before {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo a{
@@ -162,8 +177,8 @@ header.scrolled.menu-is-open {
 }
 
 .logo img{
-  height: calc(var(--header-height) - 10px); /* Bigger logo */
-  max-height: 80px;
+  height: calc(var(--header-height) - 25px);
+  max-height: 55px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -171,8 +186,8 @@ header.scrolled.menu-is-open {
 
 @media (max-width: 767px){
   .logo img{
-    max-height: 58px;
-    height: 58px;
+    max-height: 45px;
+    height: 45px;
   }
 }
 
@@ -225,6 +240,10 @@ nav a:hover::after {
 .hamburger {
   display: none;
   cursor: pointer;
+  padding: 10px;
+  position: relative;
+  z-index: 1002;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger .bar {
@@ -232,9 +251,20 @@ nav a:hover::after {
   width: 25px;
   height: 3px;
   margin: 5px auto;
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   background-color: var(--text-color);
   border-radius: 2px;
+}
+
+/* Hamburger Animation */
+.hamburger.toggle-active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.hamburger.toggle-active .bar:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.toggle-active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* --- HOME PAGE --- */
@@ -248,16 +278,18 @@ body:has(#home.active) {
   align-items: center;
   flex-grow: 1;
   text-align: center;
+  /* Increased opacity of grid lines and brightened the blue center for higher brightness */
   background:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at center, #0b2b41, var(--background-color) 80%);
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at center, #164869, var(--background-color) 80%);
   background-size: 50px 50px, 50px 50px, 100% 100%;
+  /* Adjusted mask to be more permissive (brighter) */
   mask-image: radial-gradient(
     circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%),
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.6) 50%,
-    rgba(0, 0, 0, 0.3) 100%
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.5) 100%
   );
   transition: mask-image 0.15s ease-out;
 }
@@ -298,8 +330,6 @@ body:has(#home.active) {
   transform: translateY(-3px);
   color: #fff;
 }
-
-/* --- The rest of your CSS remains the same structure, colors updated to the new variables where relevant --- */
 
 /* --- Service Detail View --- */
 .service-detail-container {
@@ -972,18 +1002,13 @@ body:has(#home.active) footer {
   header { padding: 0 1.5rem; }
   .hamburger {
     display: block;
-    z-index: 1002;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1.5rem;
   }
 
   .logo { display: flex; align-items: center; }
-  nav ul{
-    will-change: transform, opacity;
-    transform: translateY(-20px);
-  }
-
-  nav ul.nav-active{
-    transform: translateY(0);
-  }
 
   nav ul {
     position: fixed;
@@ -995,17 +1020,25 @@ body:has(#home.active) footer {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    background-color: rgba(7, 16, 33, 0.95);
-    backdrop-filter: blur(10px);
+    background-color: rgba(7, 16, 33, 0.98); 
+    
+    /* Animation Initial State */
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    z-index: 1001;
+    transform: translateY(-10px);
+    
+    /* Ensure robust transition: delay visibility hide */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+    will-change: opacity, transform;
+    z-index: 1001; /* Above header content (1000) so it covers the screen properly */
   }
 
   nav ul.nav-active {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
+    /* Show visibility immediately */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0s;
   }
 
   nav a {
@@ -1078,7 +1111,3 @@ body:has(#home.active) footer {
 
 /* Small utility classes */
 .small-accent { color: var(--accent-color); }
-
-
-
-/* End of file */
