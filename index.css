@@ -1224,3 +1224,60 @@ li,
     font-size: 1rem;
   }
 }
+/* --- Mobile scroll / blank-space fixes ---
+   Paste this at the end of your CSS file
+*/
+@media (max-width: 767px) {
+  /* Ensure each page fills the viewport minus header so there's no long empty stretch */
+  .page {
+    min-height: calc(100vh - var(--header-height));
+    box-sizing: border-box;
+  }
+
+  /* Reduce large paddings that create extra vertical space on mobile */
+  .content-page {
+    padding: calc(var(--header-height) + 1.5rem) 1rem 1.5rem;
+    max-width: 100%;
+  }
+
+  /* Home should not force extra centering space — keep it visible but constrained */
+  #home.active {
+    align-items: flex-start;
+    padding-top: var(--header-height);
+    min-height: calc(100vh - var(--header-height));
+  }
+
+  .hero {
+    padding: 1.5rem 1rem 2rem;
+  }
+
+  /* Reduce big vertical gaps used on desktop */
+  .section-divider { margin-bottom: 2rem; }
+  .our-philosophy, .the-votive-approach, .life-at-votive, .open-positions {
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Tighter spacing for lists and feature blocks */
+  .philosophy-grid { gap: 1rem; }
+  .service-feature-list { gap: 2.5rem; }
+  .feature-section { padding: 1.5rem 0; }
+
+  /* Shorter iframe map height to avoid long vertical scrolling */
+  .map-container iframe { height: 280px; }
+
+  /* Make sure hidden detail containers don't produce whitespace */
+  .service-detail-container[hidden] { display: none !important; }
+
+  /* Prevent accidental extra transform/translate spacing when showing/hiding mobile nav */
+  nav ul { transform: none; }
+
+  /* Avoid extra bottom margin when footer is shown */
+  footer { padding-bottom: 1.5rem; }
+
+  /* Minor: ensure smooth fadeIn doesn't leave a tall invisible area */
+  .content-page { animation-fill-mode: both; }
+
+  /* Make sure html/body always cover viewport to avoid overscroll gaps on some devices */
+  html, body { height: 100%; }
+}
