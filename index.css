@@ -1344,3 +1344,63 @@ html, body {
     display: none;
   }
 }
+
+
+/* ---------- Mobile: force-perfect centering for #home ---------- */
+@media (max-width: 767px) {
+  /* Allow body to scroll if needed (override earlier overflow:hidden) */
+  body:has(#home.active) {
+    overflow-y: auto !important;
+  }
+
+  /* Center the home container vertically and horizontally */
+  #home.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding-top: var(--header-height);
+    min-height: calc(100vh - var(--header-height));
+    box-sizing: border-box;
+  }
+
+  /* Make hero layout robust on small viewports */
+  .hero {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1rem 2rem;
+    gap: 1rem;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* Prevent oversized heading from pushing content off-centre */
+  .hero h1 {
+    font-size: clamp(2.4rem, 8vw, 4.2rem);
+    line-height: 1.05;
+    margin: 0;
+    max-width: 92%;
+    word-break: break-word;
+  }
+
+  .hero .subtitle {
+    font-size: clamp(0.95rem, 3.2vw, 1.25rem);
+    margin-top: 0.5rem;
+  }
+
+  /* Ensure logo image doesn't force layout overflow */
+  .hero-logo img,
+  .logo img {
+    max-width: 85%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Keep footer hidden while home is active (like existing behaviour) */
+  body:has(#home.active) footer {
+    display: none !important;
+  }
+}
