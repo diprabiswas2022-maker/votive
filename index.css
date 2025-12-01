@@ -1496,3 +1496,55 @@ html, body {
   }
 }
 
+/* Full-width bottom contact banner - mobile only */
+.mobile-contact-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #0d1826; /* dark theme */
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.4);
+  z-index: 99999;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.contact-banner-left p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.contact-banner-btn {
+  background: var(--primary-color);
+  padding: 10px 18px;
+  border-radius: 25px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.contact-banner-btn:active,
+.contact-banner-btn:hover {
+  background: var(--accent-color);
+}
+
+/* Hide on desktop */
+@media (min-width: 769px) {
+  .mobile-contact-banner {
+    display: none;
+  }
+}
+
+/* Add padding at bottom so banner doesn't overlap content */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 70px; /* height of banner */
+  }
+}
