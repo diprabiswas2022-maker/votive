@@ -1805,3 +1805,69 @@ html, body {
 .contact-button::after {
   display: none !important; /* remove underline animation for this button only */
 }
+/* ========== overrides_votive_header_nav.css
+   Small overrides — safe to append after your main styles_votive.css
+   (Does not modify the original file; only provides stronger rules.)
+*/
+
+/* 1) Remove unwanted scroll-to-top element completely */
+.scroll-to-top,
+.scroll-to-top.visible {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* 2) Ensure Contact button never inverts or becomes unreadable on hover/active/focus */
+.contact-button {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important; /* defensive */
+  transition: background-color 0.18s ease !important;
+  box-shadow: none !important;
+}
+.contact-button:hover,
+.contact-button:focus,
+.contact-button:active {
+  background-color: var(--accent-color) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  text-decoration: none !important;
+  outline: none !important;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35) !important;
+}
+/* remove the nav underline animation for the contact-button specifically */
+.contact-button::after { display: none !important; }
+
+/* 3) Prevent the header nav link from turning the whole button text red when clicked (mobile/tap) */
+.contact-button:active,
+.contact-button:visited,
+.contact-button[aria-pressed="true"] {
+  color: #ffffff !important;
+}
+
+/* 4) Make sure header background transition remains smooth and doesn't flash on mobile taps */
+header, header::before {
+  -webkit-tap-highlight-color: transparent !important;
+  transition: background-color 180ms ease, backdrop-filter 180ms ease, border-bottom 180ms ease !important;
+}
+
+/* 5) Improve hit target for header links without changing layout */
+nav a,
+nav li > a {
+  padding: 8px 6px !important;
+  border-radius: 6px !important;
+}
+
+/* 6) Tidy mobile hamburger stacking to avoid accidental overlap */
+@media (max-width: 767px) {
+  .hamburger { z-index: 10050 !important; }
+  nav ul { z-index: 10040 !important; }
+}
+
+/* 7) Defensive: keep header always above floating mobile-contact-banner (if present) */
+.mobile-contact-banner { z-index: 99999 !important; }
+header { z-index: 100100 !important; }
+
+/* End of overrides */
