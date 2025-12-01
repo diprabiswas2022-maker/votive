@@ -1404,3 +1404,94 @@ html, body {
     display: none !important;
   }
 }
+/* ========== Mobile: center hero to match screenshot 2 ========== */
+@media (max-width: 767px) {
+  /* allow scrolling when home is active */
+  body:has(#home.active) {
+    overflow-y: auto !important;
+  }
+
+  /* center the page content and reserve header space */
+  #home.active {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: var(--header-height);
+    min-height: calc(100vh - var(--header-height));
+    box-sizing: border-box;
+  }
+
+  /* hero layout */
+  .hero {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start; /* logo first, then subtitle + CTA */
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.25rem 1rem 3.5rem; /* extra bottom space to place CTA lower */
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  /* big logo, constrained by viewport width */
+  .hero-logo {
+    width: 92%;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .hero-logo img {
+    width: 100%;
+    height: auto;
+    max-height: 36vw;          /* responsive height so it scales nicely */
+    object-fit: contain;
+    display: block;
+    -webkit-touch-callout: none;
+  }
+
+  /* subtitle and CTA styling to match composition */
+  .hero .subtitle {
+    font-size: clamp(0.95rem, 3.2vw, 1.12rem);
+    letter-spacing: 4px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    max-width: 92%;
+    color: var(--soft-accent);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .cta-button {
+    margin-top: 1.5rem;
+    padding: 1rem 2.25rem;
+    font-size: 1.05rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    transform: translateY(4vh); /* nudge CTA downward to match screenshot layout */
+  }
+
+  /* ensure header logo doesn't push hero down unexpectedly */
+  header {
+    height: var(--header-height);
+  }
+  .logo img {
+    max-height: 44px;
+    height: 44px;
+    width: auto;
+  }
+
+  /* keep floating contact button clear of CTA */
+  .mobile-contact-button {
+    right: 18px;
+    bottom: 18px;
+  }
+
+  /* shorten iframe/map height on mobile (if present below) */
+  .map-container iframe {
+    height: 240px;
+  }
+}
