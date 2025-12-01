@@ -1871,3 +1871,20 @@ nav li > a {
 header { z-index: 100100 !important; }
 
 /* End of overrides */
+/* ------------------------------------------------------------------
+   FIX ONLY for the Contact Us button INSIDE the mobile bottom banner
+   Does NOT change the navbar contact button
+------------------------------------------------------------------ */
+
+.contact-banner-btn {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  transition: background-color 0.25s ease !important;
+}
+
+.contact-banner-btn:hover,
+.contact-banner-btn:active,
+.contact-banner-btn:focus {
+  background: var(--accent-color) !important;
+  color: #fff !important;
+}
