@@ -1548,3 +1548,84 @@ html, body {
     padding-bottom: 70px; /* height of banner */
   }
 }
+
+/* ==== PERFECT MOBILE CENTERED HOME PAGE ==== */
+@media (max-width: 767px) {
+
+  /* Allow natural scrolling when needed */
+  body:has(#home.active) {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Home page full height */
+  #home.active {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;     /* center vertically */
+    align-items: center;         /* center horizontally */
+    min-height: calc(100vh - var(--header-height));
+    padding-top: var(--header-height);
+    box-sizing: border-box;
+  }
+
+  /* HERO BLOCK — fully centered */
+  .hero {
+    width: 100%;
+    max-width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;     /* center evenly */
+    align-items: center !important;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 1rem 1rem 2rem;
+    box-sizing: border-box;
+  }
+
+  /* HERO LOGO scaling */
+  .hero-logo {
+    width: 92%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-logo img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Title and subtitle */
+  .hero h1 {
+    font-size: clamp(2.3rem, 8vw, 4rem);
+    margin: 0;
+    max-width: 90%;
+    line-height: 1.1;
+  }
+
+  .hero .subtitle {
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    margin: 0.4rem 0 0.6rem;
+    letter-spacing: 3px;
+    max-width: 90%;
+  }
+
+  /* CTA BUTTON placed perfectly centered */
+  .cta-button {
+    margin-top: 1.2rem;
+    font-size: 1.05rem;
+    padding: 0.9rem 2.3rem;
+    border-radius: 10px;
+    display: inline-block;
+    transform: translateY(10px); /* slight lower placement for aesthetic */
+  }
+
+  /* Hide footer when home screen is active */
+  body:has(#home.active) footer {
+    display: none !important;
+  }
+}
