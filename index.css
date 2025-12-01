@@ -1734,3 +1734,60 @@ html, body {
     transform: none !important; /* remove previous shifts */
   }
 }
+/* === PERFECT TRUE CENTER FIX FOR MOBILE HOME PAGE === */
+@media (max-width: 767px) {
+
+  #home.active {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(100vh - var(--header-height));
+    width: 100%;
+    overflow: hidden;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .hero {
+    width: 100%;
+    height: 100%;
+
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+
+    gap: 0.8rem;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    transform: translateY(-8%);  /* ← moved slightly higher */
+  }
+
+  .hero-logo img {
+    max-width: 85%;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .hero .subtitle {
+    margin: 0;
+    padding: 0;
+  }
+
+  .cta-button {
+    margin: 0;
+    padding: 12px 24px;
+    border-radius: 10px;
+    transform: none !important;
+  }
+}
