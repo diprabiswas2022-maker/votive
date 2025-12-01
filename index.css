@@ -1281,3 +1281,66 @@ li,
   /* Make sure html/body always cover viewport to avoid overscroll gaps on some devices */
   html, body { height: 100%; }
 }
+
+
+/* Allow natural full-page height */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;  /* enables footer push */
+}
+
+/* Main wrapper takes remaining space */
+#app {
+  flex: 1;                 /* pushes footer to bottom */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pages grow naturally */
+.page {
+  flex: 1;
+  min-height: auto;        /* remove old forced height */
+}
+
+/* Home hero still full height */
+#home.active {
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* Detail views should expand normally */
+.content-page,
+.service-detail-container {
+  min-height: auto;
+}
+/* Floating Contact Button for Mobile */
+.mobile-contact-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 9999;
+  transition: 0.25s ease;
+}
+
+/* Hover effect (optional) */
+.mobile-contact-button:active,
+.mobile-contact-button:hover {
+  transform: scale(1.05);
+}
+
+/* Hide on Desktop */
+@media (min-width: 769px) {
+  .mobile-contact-button {
+    display: none;
+  }
+}
