@@ -1768,7 +1768,7 @@ html, body {
     padding: 0 !important;
     margin: 0 !important;
 
-    transform: translateY(-20%);  /* ← moved slightly higher */
+    transform: translateY(-18%);  /* ← moved slightly higher */
   }
 
   .hero-logo img {
