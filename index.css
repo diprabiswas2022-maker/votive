@@ -1112,3 +1112,115 @@ font-size: 1.8rem;
 
 /* Small utility classes */
 .small-accent { color: var(--accent-color); }
+
+
+/* === Text-size adjustments (smaller body text, headings remain relatively larger)
+   - Applied only to main content areas so footer and navbar font sizes remain unchanged
+   - Drop this block into the end of your CSS file
+*/
+
+/* Slightly reduce normal/readable text across content pages and home (does NOT target nav/footer) */
+.content-page,
+#home,
+#app main,
+.page-intro,
+p,
+li,
+.service-feature-content p,
+.philosophy-card p,
+.contact-info p,
+.benefit-text p,
+.open-positions-message,
+.contact-form label,
+.contact-form input,
+.contact-form textarea,
+.text-input,
+.small-accent {
+  font-size: 0.94rem; /* ~6% smaller than default 1rem for subtle reduction */
+  line-height: 1.55;  /* keep good readability */
+}
+
+/* Keep form controls readable yet slightly reduced */
+.contact-form input,
+.contact-form textarea,
+.text-input,
+.btn {
+  font-size: 0.95rem;
+}
+
+/* Make headings inside content areas relatively larger compared to the new body size
+   (target only content headings so footer nav fonts are NOT affected) */
+.content-page h1,
+.about-page-header h1,
+.hero h1,
+.service-detail-content h1 {
+  font-size: 3.2rem; /* slightly larger than previous 3rem */
+  line-height: 1.12;
+}
+
+.content-page h2,
+.the-votive-approach h2,
+.our-philosophy h2,
+.service-feature-content h3, /* sized-up section titles within services */
+.life-at-votive-content h2 {
+  font-size: 2.25rem; /* slightly larger than previous 2rem */
+}
+
+.content-page h3,
+.philosophy-card h3,
+.step-content h3,
+.benefit-text h3,
+.service-feature-content h3 {
+  font-size: 1.6rem; /* slightly larger than previous 1.5rem */
+}
+
+/* Special-case hero subtitle to remain legible (smaller body shouldn't shrink it too much) */
+.hero .subtitle {
+  font-size: 1.25rem; /* keep subtitle prominence */
+}
+
+/* Ensure service-feature headings keep their look on smaller screens */
+@media (max-width: 1024px) {
+  .service-feature-content h3 {
+    font-size: 1.85rem;
+  }
+}
+
+/* Mobile adjustments: preserve heading hierarchy while using smaller base text */
+@media (max-width: 767px) {
+  .content-page,
+  #home,
+  p,
+  .page-intro,
+  .service-feature-content p,
+  .philosophy-card p {
+    font-size: 0.92rem;
+  }
+
+  .content-page h1,
+  .about-page-header h1 {
+    font-size: 2.6rem; /* keep ratio on mobile */
+  }
+
+  .hero h1 {
+    font-size: 4.2rem; /* hero retains its visual weight */
+  }
+
+  .content-page h2 {
+    font-size: 2.0rem;
+  }
+
+  .content-page h3 {
+    font-size: 1.45rem;
+  }
+}
+
+/* Accessibility: ensure contrast and legibility remain good with reduced sizes */
+@media (prefers-contrast: high) {
+  .content-page,
+  #home,
+  p,
+  .page-intro {
+    font-size: 1rem;
+  }
+}

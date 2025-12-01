@@ -1,6 +1,14 @@
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
+ *
+ * Full app JS — updated so:
+ * - Clicking a Services / Consulting option opens the correct page
+ *   and shows the specific service's detailed content.
+ * - The parent page heading/introduction ("Our Services" / "Consulting Services")
+ *   is hidden while a specific detail is visible.
+ * - When returning to the list (no ?item param) the parent heading/introduction
+ *   and the lists are restored.
  */
 
 // --- App Setup ---
@@ -117,22 +125,43 @@ const serviceDetails = {
   },
 };
 
-// --- Robust SPA Navigation ---
+// --- Helper functions ---
+
+/**
+ * Restores page headings and intros for services & consulting.
+ */
+function restoreParentHeadings() {
+  const servicesHeader = document.querySelector('#services > h1');
+  const servicesIntro = document.querySelector('#services > .page-intro');
+  const consultingHeader = document.querySelector('#consulting > h1');
+  const consultingIntro = document.querySelector('#consulting > .page-intro');
+
+  if (servicesHeader) servicesHeader.style.display = '';
+  if (servicesIntro) servicesIntro.style.display = '';
+  if (consultingHeader) consultingHeader.style.display = '';
+  if (consultingIntro) consultingIntro.style.display = '';
+}
 
 /**
  * Hides all service detail views and shows all service list views.
+ * Also restores parent headings/intros so the main page looks normal.
  */
 function showAllServiceLists() {
   document.querySelectorAll('.service-detail-container').forEach(el => {
     el.hidden = true;
+    el.innerHTML = '';
   });
   document.querySelectorAll('.feature-sections-container').forEach(el => {
     el.hidden = false;
   });
+
+  // Ensure the page headings / intros are visible again
+  restoreParentHeadings();
 }
 
 /**
  * Shows the detail view for a specific service and hides the list view.
+ * Hides the parent page's main heading & intro but leaves the specific service title visible.
  * @param {string} serviceId The ID of the service to show.
  */
 function showServiceDetail(serviceId) {
@@ -149,9 +178,15 @@ function showServiceDetail(serviceId) {
   const detailContainer = parentPage.querySelector('.service-detail-container');
   if (!listContainer || !detailContainer) return;
 
+  // Hide only the parent page's main heading/introduction (NOT the specific detail title)
+  const parentHeading = parentPage.querySelector('h1');
+  const parentIntro = parentPage.querySelector('.page-intro');
+  if (parentHeading) parentHeading.style.display = 'none';
+  if (parentIntro) parentIntro.style.display = 'none';
+
   const backButtonText = detailData.parentPage === 'services' ? 'Back to all services' : 'Back to all consulting';
 
-  // Populate and show the detail container
+  // Populate and show the detail container (contains the specific service title + content)
   detailContainer.innerHTML = `
     <div class="service-detail-content">
       <a href="#${detailData.parentPage}" class="back-button">&larr; ${backButtonText}</a>
@@ -161,8 +196,12 @@ function showServiceDetail(serviceId) {
   `;
   detailContainer.hidden = false;
   listContainer.hidden = true;
+
+  // scroll to the top of the parent page so user sees the detail
+  parentPage.scrollIntoView({ behavior: 'smooth' });
 }
 
+// --- SPA Navigation ---
 
 /**
  * Shows the correct page based on its ID and hides all others.
@@ -170,7 +209,7 @@ function showServiceDetail(serviceId) {
  */
 function showPage(pageId) {
   const targetId = pageId && document.getElementById(pageId) ? pageId : 'home';
-  
+
   document.querySelectorAll('.page').forEach(page => {
     page.classList.toggle('active', page.id === targetId);
   });
@@ -192,11 +231,18 @@ function handleNavClick(event) {
   if (link && link.getAttribute('href')?.startsWith('#')) {
     event.preventDefault();
     const href = link.getAttribute('href');
+    const pageOnly = href.split('?')[0]; // e.g., "#services"
+    const pageId = pageOnly.substring(1) || 'home';
+
+    // If the hash is different, setting it will run handleHashChange
     if (window.location.hash !== href) {
-        window.location.hash = href;
+      window.location.hash = href;
+    } else {
+      // If same hash (e.g., clicking back-button or same link), force handling
+      handleHashChange();
     }
 
-    // If a link is clicked, always close the mobile nav if it's open.
+    // Close mobile nav if open
     const navMenu = document.querySelector('nav ul');
     const hamburgerIcon = document.querySelector('.hamburger');
     if (navMenu && hamburgerIcon && navMenu.classList.contains('nav-active')) {
@@ -205,39 +251,49 @@ function handleNavClick(event) {
       document.body.classList.remove('menu-open');
       header?.classList.remove('menu-is-open');
     }
-  } 
+    return;
+  }
+
   // Case 2: The hamburger menu icon was clicked
-  else if (clickedHamburger) {
+  if (clickedHamburger) {
     const navMenu = document.querySelector('nav ul');
     const hamburgerIcon = document.querySelector('.hamburger');
     if (navMenu && hamburgerIcon) {
-        navMenu.classList.toggle('nav-active');
-        hamburgerIcon.classList.toggle('toggle-active');
-        document.body.classList.toggle('menu-open');
-        header?.classList.toggle('menu-is-open');
+      navMenu.classList.toggle('nav-active');
+      hamburgerIcon.classList.toggle('toggle-active');
+      document.body.classList.toggle('menu-open');
+      header?.classList.toggle('menu-is-open');
     }
   }
 }
 
 /**
  * Updates the page content when the URL hash changes.
+ * Supports optional ?item=serviceId parameter. If present, show that service's detail (while hiding parent heading).
+ * If no item param, restore the lists & parent headings.
  */
 function handleHashChange() {
-  const hash = window.location.hash;
-  const [pageIdWithHash, queryString] = hash.split('?');
-  const pageId = pageIdWithHash.substring(1);
+  const hash = window.location.hash || '#home';
+  const [pagePart, queryString] = hash.split('?');
+  const pageId = (pagePart || '#home').replace('#', '') || 'home';
 
-  showPage(pageId); 
-  handleHeaderScroll(); // Check header state immediately after page change
+  // Show the page itself
+  showPage(pageId);
+  handleHeaderScroll();
 
-  const params = new URLSearchParams(queryString);
-  const serviceId = params.get('item');
-
-  if (serviceId) {
-    showServiceDetail(serviceId);
-  } else {
-    showAllServiceLists(); 
+  // Parse query string for item param (e.g., #services?item=contract-staffing)
+  if (queryString) {
+    const params = new URLSearchParams(queryString);
+    const serviceId = params.get('item');
+    if (serviceId && serviceDetails[serviceId]) {
+      // Show the detail for this service and hide only the parent heading/intro
+      showServiceDetail(serviceId);
+      return;
+    }
   }
+
+  // No valid item param -> show the service/consulting lists and ensure headings are visible
+  showAllServiceLists();
 }
 
 /**
@@ -246,7 +302,7 @@ function handleHashChange() {
 function handleHeaderScroll() {
   const header = document.querySelector('header');
   const homePage = document.getElementById('home');
-  
+
   if (header && homePage) {
     const isHomePageActive = homePage.classList.contains('active');
     const isScrolled = window.scrollY > 10;
@@ -270,7 +326,6 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
-
 
 // --- Scroll to top button ---
 const scrollTopButton = document.querySelector('.scroll-to-top');
