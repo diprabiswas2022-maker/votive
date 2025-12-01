@@ -1791,3 +1791,17 @@ html, body {
     transform: none !important;
   }
 }
+/* Fix Contact Us button hover color */
+.contact-button {
+  background-color: var(--primary-color);
+  color: #fff !important;
+}
+
+.contact-button:hover {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;   /* prevents text from turning red */
+}
+
+.contact-button::after {
+  display: none !important; /* remove underline animation for this button only */
+}
