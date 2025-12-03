@@ -1888,3 +1888,502 @@ header { z-index: 100100 !important; }
   background: var(--accent-color) !important;
   color: #fff !important;
 }
+
+/* === Clientele (logo) section === */
+
+.clients-section {
+  margin: 6rem 0 3rem;
+  padding: 3rem 2rem;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top left, rgba(27,136,201,0.16), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(225,27,35,0.18), transparent 55%),
+    var(--card-background);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.clients-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    130deg,
+    rgba(27,136,201,0.6),
+    rgba(225,27,35,0.6),
+    rgba(27,136,201,0.6)
+  );
+  opacity: 0.22;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.clients-header {
+  position: relative;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+}
+
+.clients-header h2 {
+  margin-bottom: 1.3rem;
+}
+
+.clients-header p {
+  margin: 0;
+  color: rgba(238,246,251,0.86);
+}
+
+/* Stats row */
+
+.client-stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  max-width: 780px;
+  margin: 0 auto 2.8rem;
+}
+
+.client-stat-card {
+  background: rgba(4,12,24,0.9);
+  border-radius: 14px;
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.55);
+  backdrop-filter: blur(14px);
+}
+
+.client-stat-card .stat-number {
+  display: block;
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: linear-gradient(90deg, #ffffff, var(--soft-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.25rem;
+}
+
+.client-stat-card .stat-label {
+  display: block;
+  font-size: 0.9rem;
+  color: rgba(238,246,251,0.8);
+}
+
+/* Logo grid */
+
+.clients-logo-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.25rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.client-logo-card {
+  position: relative;
+  padding: 0.95rem 1.2rem;
+  border-radius: 18px;
+  background: radial-gradient(circle at 0 0, rgba(27,136,201,0.4), transparent 70%);
+  background-color: rgba(3,14,26,0.95);
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+  overflow: hidden;
+}
+
+.client-logo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(27,136,201,0.22),
+    rgba(225,27,35,0.22),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.client-logo-card img {
+  position: relative;
+  max-width: 100%;
+  max-height: 42px;
+  object-fit: contain;
+  filter: grayscale(100%) brightness(1.1);
+  opacity: 0.92;
+  transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.client-logo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.9);
+  border-color: rgba(27,136,201,0.85);
+  background-color: rgba(4,18,32,1);
+}
+
+.client-logo-card:hover::before {
+  opacity: 1;
+}
+
+.client-logo-card:hover img {
+  filter: grayscale(0%) brightness(1.05);
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .clients-section {
+    margin: 4.5rem 0 3rem;
+    padding: 2.5rem 1.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .client-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .clients-section {
+    padding: 2.3rem 1.4rem;
+  }
+
+  .clients-logo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+/* === BRIGHTER, LESS-DULL CLIENTELE SECTION OVERRIDES === */
+
+.clients-section {
+  margin: 6rem 0 3rem;
+  padding: 3.2rem 2.4rem 3rem;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top center, rgba(36, 126, 200, 0.45), transparent 65%),
+    radial-gradient(circle at bottom center, rgba(225, 27, 53, 0.38), transparent 65%),
+    linear-gradient(145deg, #111a2a, #121b30);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow:
+    0 26px 80px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(255,255,255,0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.clients-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 15% 0, rgba(78,179,255,0.45), transparent 55%),
+    radial-gradient(circle at 85% 100%, rgba(255,105,150,0.45), transparent 55%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Title + description a bit brighter and crisper */
+.clients-header {
+  position: relative;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 2.6rem;
+}
+
+.clients-header h2 {
+  margin-bottom: 1.1rem;
+  text-shadow: 0 0 18px rgba(0,0,0,0.8);
+}
+
+.clients-header p {
+  margin: 0;
+  color: rgba(241,248,255,0.95);
+  font-size: 1.02rem;
+}
+
+/* Stats – brighter cards */
+.client-stats {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.6rem;
+  max-width: 780px;
+  margin: 0 auto 3rem;
+}
+
+.client-stat-card {
+  background: radial-gradient(circle at top, rgba(10,30,60,0.95), rgba(5,16,34,0.98));
+  border-radius: 18px;
+  padding: 1.7rem 1.4rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.9);
+  backdrop-filter: blur(18px);
+}
+
+.client-stat-card .stat-number {
+  display: block;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: linear-gradient(90deg, #ffffff, #ffdfef);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.35rem;
+}
+
+.client-stat-card .stat-label {
+  font-size: 0.95rem;
+  color: rgba(234,243,255,0.9);
+}
+
+/* Logo grid – more contrast + brighter logos */
+.clients-logo-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.35rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.client-logo-card {
+  position: relative;
+  padding: 1rem 1.3rem;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #051325, #071b34);
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow:
+    0 14px 38px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(0,0,0,0.7);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 0.23s ease,
+    box-shadow 0.23s ease,
+    border-color 0.23s ease,
+    background-color 0.23s ease;
+  overflow: hidden;
+}
+
+.client-logo-card::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle at 0 0,
+              rgba(100,190,255,0.45),
+              transparent 60%);
+  opacity: 0;
+  transition: opacity 0.23s ease;
+}
+
+.client-logo-card img {
+  position: relative;
+  max-width: 100%;
+  max-height: 46px;
+  object-fit: contain;
+  filter: brightness(1.25) contrast(1.1);   /* remove dull grayscale */
+  opacity: 1;
+  transition: filter 0.23s ease, opacity 0.23s ease, transform 0.23s ease;
+}
+
+.client-logo-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 22px 52px rgba(0,0,0,1),
+    0 0 0 1px rgba(255,255,255,0.32);
+  border-color: rgba(114,199,255,0.9);
+  background-color: #061933;
+}
+
+.client-logo-card:hover::before {
+  opacity: 1;
+}
+
+.client-logo-card:hover img {
+  filter: brightness(1.4) contrast(1.15);
+  transform: translateY(-1px) scale(1.03);
+}
+
+/* Mobile tweaks */
+@media (max-width: 900px) {
+  .clients-section {
+    margin: 4.5rem 0 3rem;
+    padding: 2.6rem 1.8rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .client-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .clients-section {
+    padding: 2.4rem 1.5rem;
+  }
+
+  .clients-logo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+/* === Light Logo Cards for Better Visibility === */
+
+.clients-logo-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1.4rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.client-logo-card {
+  background: #ffffff; /* PURE WHITE */
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow:
+    0 3px 15px rgba(0,0,0,0.15),
+    0 8px 24px rgba(0,0,0,0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.client-logo-card img {
+  max-height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: none !important; /* remove grayscale */
+  opacity: 1 !important;
+}
+
+.client-logo-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(0,0,0,0.1);
+  border-color: rgba(0,0,0,0.15);
+}
+
+.client-logo-card:hover img {
+  transform: scale(1.05);
+}
+
+/* tighter grid on mobile */
+@media (max-width: 767px) {
+  .clients-logo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.2rem;
+  }
+}
+/* === FINAL Light Logo Cards (no blue tint on hover) === */
+
+.client-logo-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.15rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow:
+    0 3px 15px rgba(0,0,0,0.18),
+    0 8px 24px rgba(0,0,0,0.10);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.client-logo-card img {
+  max-height: 50px;
+  width: auto;
+  object-fit: contain;
+  filter: none !important; /* No grayscale */
+  opacity: 1 !important;
+}
+
+.client-logo-card:hover {
+  transform: translateY(-4px);
+  background: #ffffff; /* stay white */
+  border-color: rgba(0,0,0,0.12);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,0.26),
+    0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.client-logo-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Special case — To The New logo slightly small originally */
+.client-logo-card img[src*="to-the-new"] {
+  max-height: 62px !important;
+}
+/* === About Us: reduce blank space & tighten layout === */
+
+/* Make the about page content a bit wider and reduce top/bottom padding */
+#about .content-page {
+  max-width: 1100px;
+  padding-top: calc(var(--header-height) + 2.5rem);
+  padding-bottom: 2.5rem;
+}
+
+/* Cut down big gaps between sections */
+#about .section-divider {
+  margin-bottom: 3rem;
+}
+
+#about .our-philosophy {
+  margin-top: 3rem;
+  margin-bottom: 3.5rem;
+}
+
+#about .the-votive-approach {
+  margin: 3.5rem 0 3rem;
+}
+
+/* If you have any "life at votive" / extra blocks on About, keep them closer */
+#about .life-at-votive {
+  margin: 3.5rem 0;
+}
+
+/* Slightly tighter gaps on smaller screens */
+@media (max-width: 767px) {
+  #about .content-page {
+    padding-top: calc(var(--header-height) + 1.5rem);
+    padding-bottom: 2rem;
+  }
+
+  #about .section-divider {
+    margin-bottom: 2rem;
+  }
+  #about .our-philosophy,
+  #about .the-votive-approach,
+  #about .life-at-votive {
+    margin: 2.5rem 0;
+  }
+}
