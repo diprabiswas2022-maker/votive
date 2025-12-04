@@ -2400,3 +2400,9 @@ header { z-index: 100100 !important; }
     border-radius: 0 !important;
   }
 }
+/* Desktop: slightly wider Contact Us button */
+@media (min-width: 768px) {
+  .contact-button {
+    padding: 0.6rem 1.6rem; /* was 0.6rem 1.2rem */
+  }
+}
