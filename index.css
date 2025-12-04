@@ -3302,3 +3302,44 @@ header { z-index: 100100 !important; }
     transform: translateX(calc(-33.3333333333% - 1.4rem)); 
   }
 }
+/* --- FIX: Mobile/Tablet Infinite Scroll Enable (1023px and below) --- */
+@media (max-width: 1023px) {
+    
+    /* 1. Track setup for animation */
+    .home-clients-track {
+        animation: homeLogosMarquee 30s linear infinite !important; /* Use a slower duration for mobile */
+        will-change: transform;
+        
+        /* 🎯 KEY FIX: Force single line and make it wider than the viewport */
+        display: flex !important;
+        flex-wrap: nowrap !important; /* Prevent logos from wrapping */
+        width: max-content !important; /* Force the track to be wide enough for all 3 rows */
+        
+        gap: 1.4rem !important; /* Restore the track gap (between rows) */
+        transform: translateZ(0); /* GPU hint */
+    }
+
+    /* 2. Strip setup */
+    .home-clients-strip {
+        overflow: hidden !important;
+        /* Re-enable masking if desired, but not strictly necessary for motion */
+        /* mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%) !important; */
+    }
+    
+    /* 3. Row setup (ensure internal logos are spaced) */
+    .home-clients-row {
+        flex-shrink: 0; /* Important: prevents the rows from shrinking */
+        gap: 1.4rem; /* Internal logo gap */
+        justify-content: flex-start !important;
+        margin-right: 0 !important; /* Clear any lingering desktop margin */
+    }
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Final compensation for three rows (33.333%) plus the one separating gap (1.4rem) */
+    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
+  }
+}
