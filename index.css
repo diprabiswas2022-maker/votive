@@ -14,6 +14,7 @@
 --border-color: rgba(238,246,251,0.06);
 --hover-border-color: rgba(238,246,251,0.18);
 --header-height: 80px; /* Standard height */
+--scroll-duration: 30s;
 }
 
 /* --- Base & Reset --- */
@@ -2657,5 +2658,612 @@ header { z-index: 100100 !important; }
   }
   .home-client-logo img {
     max-height: 22px;
+  }
+}
+/* === HOME CLIENT LOGO STRIP === */
+
+.home-clients-strip {
+  width: 100%;
+  overflow: hidden;
+  margin: 2.5rem 0 0;
+  padding: 1rem 0;
+  background: rgba(255,255,255,0.06); /* ALWAYS visible light background */
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.home-clients-track {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  width: max-content;
+}
+
+/* Each logo card */
+.home-client-logo {
+  background: #f2f6fa; /* permanent light background */
+  padding: 10px 18px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.home-client-logo img {
+  max-height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Hover pop */
+.home-client-logo:hover {
+  transform: scale(1.4);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  z-index: 10;
+}
+
+/* Move logos on laptops only */
+@media (min-width: 1024px) {
+  .home-clients-track {
+    animation: homeLogoScroll 40s linear infinite;
+  }
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes homeLogoScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+/* Mobile/Tablet static */
+@media (max-width: 1023px) {
+  .home-clients-track {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+/* Move logos endlessly in a perfect loop (laptop only) */
+@media (min-width: 1024px) {
+  .home-clients-strip {
+    mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 12%,
+      black 88%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    animation: loopScroll 45s linear infinite;
+    will-change: transform;
+  }
+
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused; /* pause when hovered */
+  }
+
+  @keyframes loopScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* exactly half because logos duplicated */
+  }
+}
+ /* Desktop smooth infinite scroll */
+@media (min-width: 1024px) {
+
+  .home-clients-strip {
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    display: inline-flex;
+    gap: 1.5rem;
+    animation: scroll linear infinite;
+    animation-duration: var(--scroll-duration);
+  }
+
+  /* Pause when hovering logos */
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%); /* EXACT half of full content */
+    }
+  }
+}
+/* Desktop smooth infinite scroll */
+@media (min-width: 1024px) {
+
+  .home-clients-strip {
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    display: inline-flex;
+    
+    animation: scroll linear infinite;
+    animation-duration: var(--scroll-duration);
+    will-change: transform;
+  }
+
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* === HOME CLIENT LOGO STRIP – CLEAN VERSION === */
+
+.home-clients-strip {
+  width: 100%;
+  margin: 2.5rem 0 0;
+  padding: 1rem 0;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.home-clients-track {
+  display: flex;
+  width: max-content;
+}
+
+.home-clients-row {
+  display: flex;
+  gap: 1.4rem;          /* spacing between logos */
+}
+
+/* Logo pill */
+.home-client-logo {
+  background: #f2f6fa;  /* light even before hover */
+  padding: 10px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.home-client-logo img {
+  max-height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Hover pop */
+.home-client-logo:hover {
+  transform: scale(1.35);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+/* Desktop: smooth infinite scroll */
+@media (min-width: 1024px) {
+  .home-clients-strip {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    animation: homeLogosMarquee 45s linear infinite;
+  }
+
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes homeLogosMarquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); } /* one full row width */
+  }
+}
+
+/* Tablet + mobile: static, centered row */
+@media (max-width: 1023px) {
+  .home-clients-strip {
+    mask-image: none;
+  }
+
+  .home-clients-track {
+    animation: none;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+/* Override to eliminate gap between the two ROW containers */
+@media (min-width: 1024px) {
+  .home-clients-track {
+    /* Remove gap that was spacing ROW 1 and ROW 2 */
+    gap: 0 !important; 
+  }
+  
+  .home-clients-row {
+     /* Re-introduce a gap at the end of the first row 
+        if you want extra space before the second row starts */
+     margin-right: 1.5rem; 
+  }
+
+  /* Ensure the row is a flex container for the inner gap */
+  .home-clients-row {
+    display: flex !important;
+  }
+}
+
+/* Update the Desktop Scroll Block (or append to the end) */
+@media (min-width: 1024px) {
+  .home-clients-strip {
+    /* Keep existing styles */
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    display: inline-flex;
+    gap: 1.4rem !important; /* Ensure this is set to your preferred gap */
+    animation: homeLogosMarquee var(--scroll-duration) linear infinite;
+    will-change: transform;
+    /* Key fix: Add GPU acceleration hint. 
+       Use translateZ(0) or translate3d(0, 0, 0) to prevent flicker/jump. 
+    */
+    transform: translateZ(0); 
+  }
+
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+  
+  /* Remove any conflicting gap settings from previous attempts */
+  .home-clients-track {
+      gap: 0 !important;
+  }
+  .home-clients-row {
+      margin-right: 1.4rem; /* Use margin to space the rows if needed, or remove this if gap:0 works */
+  }
+}
+
+/* Ensure the total animation time is not too long, as suggested before (e.g., 20s-30s) */
+:root {
+  --scroll-duration: 25s; /* You can adjust this value */
+}
+
+/* Update the Desktop Scroll Block (or append to the end) */
+@media (min-width: 1024px) {
+  .home-clients-strip {
+    /* Keep existing styles */
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+
+  .home-clients-track {
+    display: inline-flex;
+    gap: 1.4rem !important; /* Ensure this is set to your preferred gap */
+    animation: homeLogosMarquee var(--scroll-duration) linear infinite;
+    will-change: transform;
+    /* Key fix: Add GPU acceleration hint. 
+       Use translateZ(0) or translate3d(0, 0, 0) to prevent flicker/jump. 
+    */
+    transform: translateZ(0); 
+  }
+
+  .home-clients-strip:hover .home-clients-track {
+    animation-play-state: paused;
+  }
+  
+  /* Remove any conflicting gap settings from previous attempts */
+  .home-clients-track {
+      gap: 0 !important;
+  }
+  .home-clients-row {
+      margin-right: 1.4rem; /* Use margin to space the rows if needed, or remove this if gap:0 works */
+      gap: 1.5 rem;
+  }
+}
+
+/* Ensure the total animation time is not too long, as suggested before (e.g., 20s-30s) */
+:root {
+  --scroll-duration: 25s; /* You can adjust this value */
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* 🎯 Key Fix: Scroll 1/3 of the total content (100% / 3 = 33.33%) */
+    /* We use 33.333% to break the pixel-perfect reset and hide the jump */
+    transform: translateX(-33.333%); 
+  }
+}
+@media (min-width: 1024px) {
+  .home-clients-track {
+    /* 1. Ensure tight fit (no gap between the three rows) */
+    gap: 0 !important; 
+    
+    /* 2. Keep GPU acceleration for smoothness */
+    transform: translateZ(0); 
+    
+    /* Ensure other animation properties are set */
+    animation: homeLogosMarquee var(--scroll-duration) linear infinite;
+    will-change: transform;
+    display: inline-flex;
+  }
+  
+  /* Ensure individual row spacing is zeroed out if it interferes */
+  .home-clients-row {
+     margin: 0 !important; 
+  }
+}
+/* --- TRIPLE ROW SCROLL FIX (Most Robust) --- */
+
+/* Reset for the three-row structure */
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* SCROLL 1/3 of the total content width (33.333% of 300% = 100%) */
+    transform: translateX(-33.333%); 
+  }
+}
+
+@media (min-width: 1024px) {
+  
+  /* Ensure the track elements are tightly packed without internal gaps */
+  .home-clients-track {
+    display: inline-flex !important;
+    gap: 0 !important;
+    
+    /* Hardware Acceleration */
+    transform: translateZ(0); 
+    
+    /* Apply the new keyframes */
+    animation: homeLogosMarquee var(--scroll-duration) linear infinite;
+  }
+  
+  /* Ensure the rows themselves have no external margin or padding interfering */
+  .home-clients-row {
+     margin: 0 !important; 
+     padding: 0 !important;
+     /* Restore the *internal* gap between logos for correct visual spacing */
+     gap: 1.4rem; 
+  }
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* We cannot precisely calculate the width of all the logos (14 * 72px) 
+       since they are inline-flex and their size is variable.
+       
+       INSTEAD, we will let the browser calculate the full width of Row 1 
+       and use that as the final destination. 
+       
+       We can define the end position using a named column line in the grid-track, 
+       but since this isn't a simple grid, we use a different approach:
+    */
+    
+    /* 🎯 New Calculation: Use a large, negative value that is guaranteed 
+       to exceed the width of one row, and then adjust the transform 
+       to perfectly match the start of Row 2. This is easier with JavaScript.
+       
+       Since we are restricted to CSS, let's use a very large percentage 
+       that is *almost* 33.333% but allows for error. We will rely on 
+       the element's width, which is difficult without calc() and fixed widths.
+    */
+    
+    /* Reverting to a slight overshoot based on accumulated gap */
+    transform: translateX(calc(-33.333% - 1.4rem)); 
+    /* This tells the browser to scroll 1/3 of the track PLUS one logo gap width, 
+       hopefully making the last logo of the row perfectly align with the first logo. */
+  }
+}
+@media (min-width: 1024px) {
+    /* ... existing styles ... */
+    
+    .home-clients-row {
+        /* 🎯 Key: Enforce content width calculation based on internal elements */
+        width: min-content; 
+        
+        /* Ensure there is no gap added between the rows themselves */
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 1.4rem; /* Ensure this is the only source of internal gap */
+    }
+}
+@media (min-width: 1024px) {
+    
+  .home-clients-track {
+    /* Ensure the track itself has no gap property spacing the rows */
+    gap: 0 !important; 
+    /* Keep existing animation properties: transform: translateZ(0);, etc. */
+  }
+  
+  .home-clients-row {
+     /* Remove accidental margin/padding */
+     margin: 0 !important;
+     padding: 0 !important;
+     
+     /* 🎯 KEY: Add the required gap (1.4rem) after every row except the last one */
+     margin-right: 1.4rem; 
+     
+     /* Ensure the third row doesn't have an extra gap at the end of the track */
+     /* This targets the 3rd row out of 3, or the last in any current list */
+     &:last-child {
+         margin-right: 0 !important;
+     }
+  }
+}@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* 🎯 FINAL KEY FIX: Scroll the width of 1/3 of the track 
+       (33.333%) PLUS the required 1.4rem gap that follows the first row. */
+    transform: translateX(calc(-33.333% - 1.4rem)); 
+  }
+}
+@media (min-width: 1024px) {
+    
+  .home-clients-track {
+    /* Ensures the row containers are tightly packed before margin is applied */
+    gap: 0 !important; 
+    /* Keep existing transform: translateZ(0); */
+  }
+  
+  .home-clients-row {
+     /* Remove any unwanted margin/padding */
+     margin: 0 !important;
+     padding: 0 !important;
+     
+     /* 🎯 KEY FIX 1: Add the required 1.4rem gap AFTER each row */
+     margin-right: 1.4rem; 
+     
+     /* Ensure the third row doesn't have an extra margin at the very end of the track */
+     &:last-child {
+         margin-right: 0 !important;
+     }
+  }
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* 🎯 KEY FIX 2: Scroll the width of 1/3 of the track, plus the 1.4rem margin that 
+       separates Row 1 from Row 2. */
+    transform: translateX(calc(-33.333% - 1.4rem)); 
+  }
+}
+@media (min-width: 1024px) {
+    
+  .home-clients-track {
+    /* Ensures no internal gap between rows */
+    gap: 0 !important; 
+  }
+  
+  .home-clients-row {
+     margin: 0 !important;
+     padding: 0 !important;
+     
+     /* The 1.4rem margin creates the desired gap after the row */
+     margin-right: 1.4rem; 
+  }
+  
+  /* Selectors must ensure only the last row doesn't have the margin-right */
+  /* Since we don't have access to the full CSS file structure, ensure this rule is applied last */
+  .home-clients-row:last-child {
+      margin-right: 0 !important;
+  }
+}
+:root {
+  /* Increase duration slightly to help browser with calculation */
+  --scroll-duration: 40s; 
+}
+
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* 🎯 FINAL FIX: Use calc() to subtract the required margin (1.4rem) 
+       from the percentage scroll distance (33.333%).
+       This combination forces the browser to align the content boundary.
+    */
+    transform: translateX(calc(-33.333% - 1.4rem)); 
+  }
+}
+/* --- Extreme Precision Keyframe Fix (If 33.333% fails) --- */
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Use extremely high precision percentage */
+    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
+  }
+}
+@media (min-width: 1024px) {
+  
+  .home-clients-track {
+    /* 🎯 KEY FIX 1: Set the GAP property here. It will apply BETWEEN the three rows. */
+    gap: 1.4rem !important; 
+    
+    /* Ensure other animation properties are set */
+    transform: translateZ(0);
+    will-change: transform;
+    display: inline-flex;
+  }
+  
+  .home-clients-row {
+    /* KEY FIX 2: Clear all custom margins/padding that might conflict */
+    margin: 0 !important;
+    padding: 0 !important;
+    /* This gap applies to the logos *inside* the row (Avizva/Incedo) */
+    gap: 1.4rem; 
+  }
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* 🎯 FINAL KEY FIX: Scroll 1/3 of the track PLUS the 1.4rem gap */
+    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
   }
 }
