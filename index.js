@@ -25,12 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Close mobile menu whenever page changes
     closeMobileMenu();
     window.scrollTo({ top: 0, behavior: "instant" || "auto" });
   }
 
-  // Default: find the page already marked as .active, or fall back to #home
   (function ensureInitialActivePage() {
     const active = document.querySelector(".page.active");
     if (!active && homeSection) {
@@ -47,10 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (dataPage) {
         targetId = dataPage;
       } else if (href && href.startsWith("#")) {
-        targetId = href.replace("#", "");
+        targetId = href.slice(1);
       }
 
-      // If the nav link is meant to switch SPA pages
       if (targetId && document.getElementById(targetId)) {
         e.preventDefault();
         setActivePage(targetId);
@@ -86,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Close on any nav link click (mobile)
     navList.addEventListener("click", function (e) {
       if (e.target.matches("a")) {
         closeMobileMenu();
@@ -161,8 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   contactButtons.forEach((btn) => {
     btn.addEventListener("click", function (e) {
-      // If it's a nav link with href="#contact" the SPA logic will handle it,
-      // but we still ensure we don't navigate away
       if (this.tagName.toLowerCase() === "a") {
         const href = this.getAttribute("href");
         if (href && href.startsWith("#")) {
@@ -174,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   /* ---------------------------
-   * 6. SERVICE DETAIL VIEW (optional safe default)
+   * 6. SERVICE DETAIL VIEW
    * --------------------------- */
 
   const serviceCards = document.querySelectorAll("[data-service-detail-id]");
@@ -183,11 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showServiceDetail(id) {
     serviceDetailContainers.forEach((box) => {
-      if (box.id === id) {
-        box.hidden = false;
-      } else {
-        box.hidden = true;
-      }
+      box.hidden = box.id !== id;
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -207,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function () {
       serviceDetailContainers.forEach((box) => {
         box.hidden = true;
       });
-      // Scroll back to main services top
       const servicesPage = document.getElementById("services");
       if (servicesPage) {
         setActivePage("services");
@@ -225,50 +214,42 @@ document.addEventListener("DOMContentLoaded", function () {
     const track = document.querySelector(".home-clients-track");
     if (!strip || !track) return;
 
-    // CLONE children once to create "double" content for seamless loop
-    const originals = Array.from(track.children);
-    originals.forEach((node) => {
+    // Force layout that works on mobile/tablet too (override CSS that wraps/centers)
+    strip.style.overflow = "hidden";
+    track.style.display = "flex";
+    track.style.flexWrap = "nowrap";
+    track.style.willChange = "transform";
+
+    // Duplicate children once to create seamless loop
+    const children = Array.from(track.children);
+    children.forEach((node) => {
       track.appendChild(node.cloneNode(true));
     });
 
-    // Start + reset values
-    let x = 0;
-    let resetAt = 0;
+    let offset = 0;
+    let resetWidth = track.scrollWidth / 2;
 
-    function computeReset() {
-      // Reset distance = half total width (because we doubled the content)
-      resetAt = track.scrollWidth / 2;
+    function recalcResetWidth() {
+      resetWidth = track.scrollWidth / 2;
     }
+    window.addEventListener("resize", recalcResetWidth);
 
-    computeReset();
-    window.addEventListener("resize", computeReset);
-
-    // Speed based on viewport width (tweak as you like)
-    function getSpeed() {
+    function getPixelsPerFrame() {
       const w = window.innerWidth;
-      if (w < 768) return 0.3;  // mobile
-      if (w < 1024) return 0.4; // tablet
-      return 0.6;               // desktop
+      // Adjust speeds per device
+      if (w < 768) return 0.35; // mobile
+      if (w < 1024) return 0.45; // tablet
+      return 0.6; // desktop
     }
 
-    let speed = getSpeed();
+    let pxPerFrame = getPixelsPerFrame();
     window.addEventListener("resize", () => {
-      speed = getSpeed();
+      pxPerFrame = getPixelsPerFrame();
     });
 
-    function step() {
-      x -= speed;
-      if (-x >= resetAt) {
-        x = 0; // snap back with no visual gap
-      }
-      track.style.transform = `translateX(${x}px)`;
-      requestAnimationFrame(step);
-    }
-
-    requestAnimationFrame(step);
-
-    // Optional: pause on hover for pointer devices
     let paused = false;
+
+    // Pause on hover (desktop only – pointer devices)
     strip.addEventListener("mouseenter", () => {
       if (window.matchMedia("(hover: hover)").matches) {
         paused = true;
@@ -278,14 +259,17 @@ document.addEventListener("DOMContentLoaded", function () {
       paused = false;
     });
 
-    // Slight adjustment: if you want true pause-on-hover, wrap step:
-    (function animate() {
+    function loop() {
       if (!paused) {
-        x -= speed;
-        if (-x >= resetAt) x = 0;
-        track.style.transform = `translateX(${x}px)`;
+        offset -= pxPerFrame;
+        if (-offset >= resetWidth) {
+          offset = 0;
+        }
+        track.style.transform = `translate3d(${offset}px, 0, 0)`;
       }
-      requestAnimationFrame(animate);
-    })();
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
   })();
 });
