@@ -1,4 +1,3 @@
-
 /* styles_votive.css
    Full CSS with updated color theme to match Votive logo
    Logo path: /mnt/data/votive_final.png
@@ -523,9 +522,6 @@ background-color: var(--accent-color);
 border: 4px solid var(--background-color);
 border-radius: 50%;
 z-index: 1;
-display: flex;
-justify-content: center;
-align-items: center;
 box-shadow: 0 0 15px rgba(225,27,35,0.5);
 }
 .approach-step:nth-child(even) .step-icon {
@@ -2707,7 +2703,7 @@ header { z-index: 100100 !important; }
 
 /* Move logos on laptops only */
 @media (min-width: 1024px) {
-  .home-clients-track {
+  /* .home-clients-track {
     animation: homeLogoScroll 40s linear infinite;
   }
   .home-clients-strip:hover .home-clients-track {
@@ -2717,7 +2713,7 @@ header { z-index: 100100 !important; }
   @keyframes homeLogoScroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
-  }
+  } */
 }
 
 /* Mobile/Tablet static */
@@ -2738,19 +2734,19 @@ header { z-index: 100100 !important; }
     );
   }
 
-  .home-clients-track {
+  /* .home-clients-track {
     animation: loopScroll 45s linear infinite;
     will-change: transform;
-  }
+  } */
 
   .home-clients-strip:hover .home-clients-track {
     animation-play-state: paused; /* pause when hovered */
   }
 
-  @keyframes loopScroll {
+  /* @keyframes loopScroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* exactly half because logos duplicated */
-  }
+    100% { transform: translateX(-50%); } 
+  } */
 }
  /* Desktop smooth infinite scroll */
 @media (min-width: 1024px) {
@@ -2767,26 +2763,26 @@ header { z-index: 100100 !important; }
     );
   }
 
-  .home-clients-track {
+  /* .home-clients-track {
     display: inline-flex;
     gap: 1.5rem;
     animation: scroll linear infinite;
     animation-duration: var(--scroll-duration);
-  }
+  } */
 
   /* Pause when hovering logos */
   .home-clients-strip:hover .home-clients-track {
     animation-play-state: paused;
   }
 
-  @keyframes scroll {
+  /* @keyframes scroll {
     from {
       transform: translateX(0);
     }
     to {
-      transform: translateX(-50%); /* EXACT half of full content */
+      transform: translateX(-50%); 
     }
-  }
+  } */
 }
 /* Desktop smooth infinite scroll */
 @media (min-width: 1024px) {
@@ -2803,27 +2799,27 @@ header { z-index: 100100 !important; }
     );
   }
 
-  .home-clients-track {
+  /* .home-clients-track {
     display: inline-flex;
     
     animation: scroll linear infinite;
     animation-duration: var(--scroll-duration);
     will-change: transform;
-  }
+  } */
 
   .home-clients-strip:hover .home-clients-track {
     animation-play-state: paused;
   }
 }
 
-@keyframes scroll {
+/* @keyframes scroll {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-50%);
   }
-}
+} */
 /* === HOME CLIENT LOGO STRIP – CLEAN VERSION === */
 
 .home-clients-strip {
@@ -2884,18 +2880,18 @@ header { z-index: 100100 !important; }
     );
   }
 
-  .home-clients-track {
+  /* .home-clients-track {
     animation: homeLogosMarquee 45s linear infinite;
-  }
+  } */
 
   .home-clients-strip:hover .home-clients-track {
     animation-play-state: paused;
   }
 
-  @keyframes homeLogosMarquee {
+  /* @keyframes homeLogosMarquee {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); } /* one full row width */
-  }
+    to   { transform: translateX(-50%); } 
+  } */
 }
 
 /* Tablet + mobile: static, centered row */
@@ -2905,34 +2901,29 @@ header { z-index: 100100 !important; }
   }
 
   .home-clients-track {
-    animation: none;
+    /* animation: none; */
     justify-content: center;
     flex-wrap: wrap;
   }
 }
 /* Override to eliminate gap between the two ROW containers */
 @media (min-width: 1024px) {
-  .home-clients-track {
-    /* Remove gap that was spacing ROW 1 and ROW 2 */
+  /* .home-clients-track {
     gap: 0 !important; 
   }
   
   .home-clients-row {
-     /* Re-introduce a gap at the end of the first row 
-        if you want extra space before the second row starts */
      margin-right: 1.5rem; 
   }
 
-  /* Ensure the row is a flex container for the inner gap */
   .home-clients-row {
     display: flex !important;
-  }
+  } */
 }
 
 /* Update the Desktop Scroll Block (or append to the end) */
 @media (min-width: 1024px) {
   .home-clients-strip {
-    /* Keep existing styles */
     overflow: hidden;
     position: relative;
     white-space: nowrap;
@@ -2945,236 +2936,119 @@ header { z-index: 100100 !important; }
     );
   }
 
-  .home-clients-track {
+  /* .home-clients-track {
     display: inline-flex;
-    gap: 1.4rem !important; /* Ensure this is set to your preferred gap */
+    gap: 1.4rem !important; 
     animation: homeLogosMarquee var(--scroll-duration) linear infinite;
     will-change: transform;
-    /* Key fix: Add GPU acceleration hint. 
-       Use translateZ(0) or translate3d(0, 0, 0) to prevent flicker/jump. 
-    */
+    
     transform: translateZ(0); 
-  }
+  } */
 
   .home-clients-strip:hover .home-clients-track {
     animation-play-state: paused;
   }
   
-  /* Remove any conflicting gap settings from previous attempts */
-  .home-clients-track {
+  /* .home-clients-track {
       gap: 0 !important;
   }
   .home-clients-row {
-      margin-right: 1.4rem; /* Use margin to space the rows if needed, or remove this if gap:0 works */
-  }
-}
-
-/* Ensure the total animation time is not too long, as suggested before (e.g., 20s-30s) */
-:root {
-  --scroll-duration: 25s; /* You can adjust this value */
-}
-
-/* Update the Desktop Scroll Block (or append to the end) */
-@media (min-width: 1024px) {
-  .home-clients-strip {
-    /* Keep existing styles */
-    overflow: hidden;
-    position: relative;
-    white-space: nowrap;
-    mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 10%,
-      black 90%,
-      transparent 100%
-    );
-  }
-
-  .home-clients-track {
-    display: inline-flex;
-    gap: 1.4rem !important; /* Ensure this is set to your preferred gap */
-    animation: homeLogosMarquee var(--scroll-duration) linear infinite;
-    will-change: transform;
-    /* Key fix: Add GPU acceleration hint. 
-       Use translateZ(0) or translate3d(0, 0, 0) to prevent flicker/jump. 
-    */
-    transform: translateZ(0); 
-  }
-
-  .home-clients-strip:hover .home-clients-track {
-    animation-play-state: paused;
-  }
-  
-  /* Remove any conflicting gap settings from previous attempts */
-  .home-clients-track {
-      gap: 0 !important;
-  }
-  .home-clients-row {
-      margin-right: 1.4rem; /* Use margin to space the rows if needed, or remove this if gap:0 works */
+      margin-right: 1.4rem; 
       gap: 1.5 rem;
-  }
+  } */
 }
 
 /* Ensure the total animation time is not too long, as suggested before (e.g., 20s-30s) */
 :root {
-  --scroll-duration: 25s; /* You can adjust this value */
+  --scroll-duration: 25s; 
 }
-@keyframes homeLogosMarquee {
+
+/* @keyframes homeLogosMarquee {
   from {
     transform: translateX(0);
   }
   to {
-    /* 🎯 Key Fix: Scroll 1/3 of the total content (100% / 3 = 33.33%) */
-    /* We use 33.333% to break the pixel-perfect reset and hide the jump */
     transform: translateX(-33.333%); 
   }
-}
-@media (min-width: 1024px) {
+} */
+/* @media (min-width: 1024px) {
   .home-clients-track {
-    /* 1. Ensure tight fit (no gap between the three rows) */
     gap: 0 !important; 
     
-    /* 2. Keep GPU acceleration for smoothness */
     transform: translateZ(0); 
     
-    /* Ensure other animation properties are set */
     animation: homeLogosMarquee var(--scroll-duration) linear infinite;
     will-change: transform;
     display: inline-flex;
   }
   
-  /* Ensure individual row spacing is zeroed out if it interferes */
   .home-clients-row {
      margin: 0 !important; 
   }
-}
+} */
 /* --- TRIPLE ROW SCROLL FIX (Most Robust) --- */
 
-/* Reset for the three-row structure */
-@keyframes homeLogosMarquee {
+/* @keyframes homeLogosMarquee {
   from {
     transform: translateX(0);
   }
   to {
-    /* SCROLL 1/3 of the total content width (33.333% of 300% = 100%) */
     transform: translateX(-33.333%); 
   }
-}
+} */
 
 @media (min-width: 1024px) {
   
-  /* Ensure the track elements are tightly packed without internal gaps */
-  .home-clients-track {
+  /* .home-clients-track {
     display: inline-flex !important;
     gap: 0 !important;
     
-    /* Hardware Acceleration */
     transform: translateZ(0); 
     
-    /* Apply the new keyframes */
     animation: homeLogosMarquee var(--scroll-duration) linear infinite;
-  }
+  } */
   
-  /* Ensure the rows themselves have no external margin or padding interfering */
   .home-clients-row {
-     margin: 0 !important; 
+     /* margin: 0 !important; 
      padding: 0 !important;
-     /* Restore the *internal* gap between logos for correct visual spacing */
+     gap: 1.4rem;  */
+  }
+}
+/* @keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    
+    transform: translateX(calc(-33.333% - 1.4rem)); 
+  }
+}
+@media (min-width: 1024px) {
+  
+  
+  .home-clients-row {
+     
+     width: min-content; 
+     
+     margin: 0 !important;
+     padding: 0 !important;
      gap: 1.4rem; 
   }
-}
-@keyframes homeLogosMarquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* We cannot precisely calculate the width of all the logos (14 * 72px) 
-       since they are inline-flex and their size is variable.
-       
-       INSTEAD, we will let the browser calculate the full width of Row 1 
-       and use that as the final destination. 
-       
-       We can define the end position using a named column line in the grid-track, 
-       but since this isn't a simple grid, we use a different approach:
-    */
-    
-    /* 🎯 New Calculation: Use a large, negative value that is guaranteed 
-       to exceed the width of one row, and then adjust the transform 
-       to perfectly match the start of Row 2. This is easier with JavaScript.
-       
-       Since we are restricted to CSS, let's use a very large percentage 
-       that is *almost* 33.333% but allows for error. We will rely on 
-       the element's width, which is difficult without calc() and fixed widths.
-    */
-    
-    /* Reverting to a slight overshoot based on accumulated gap */
-    transform: translateX(calc(-33.333% - 1.4rem)); 
-    /* This tells the browser to scroll 1/3 of the track PLUS one logo gap width, 
-       hopefully making the last logo of the row perfectly align with the first logo. */
-  }
-}
-@media (min-width: 1024px) {
-    /* ... existing styles ... */
-    
-    .home-clients-row {
-        /* 🎯 Key: Enforce content width calculation based on internal elements */
-        width: min-content; 
-        
-        /* Ensure there is no gap added between the rows themselves */
-        margin: 0 !important;
-        padding: 0 !important;
-        gap: 1.4rem; /* Ensure this is the only source of internal gap */
-    }
-}
-@media (min-width: 1024px) {
+} */
+/* @media (min-width: 1024px) {
     
   .home-clients-track {
-    /* Ensure the track itself has no gap property spacing the rows */
+    
     gap: 0 !important; 
-    /* Keep existing animation properties: transform: translateZ(0);, etc. */
   }
   
   .home-clients-row {
-     /* Remove accidental margin/padding */
+     
      margin: 0 !important;
      padding: 0 !important;
      
-     /* 🎯 KEY: Add the required gap (1.4rem) after every row except the last one */
      margin-right: 1.4rem; 
      
-     /* Ensure the third row doesn't have an extra gap at the end of the track */
-     /* This targets the 3rd row out of 3, or the last in any current list */
-     &:last-child {
-         margin-right: 0 !important;
-     }
-  }
-}@keyframes homeLogosMarquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* 🎯 FINAL KEY FIX: Scroll the width of 1/3 of the track 
-       (33.333%) PLUS the required 1.4rem gap that follows the first row. */
-    transform: translateX(calc(-33.333% - 1.4rem)); 
-  }
-}
-@media (min-width: 1024px) {
-    
-  .home-clients-track {
-    /* Ensures the row containers are tightly packed before margin is applied */
-    gap: 0 !important; 
-    /* Keep existing transform: translateZ(0); */
-  }
-  
-  .home-clients-row {
-     /* Remove any unwanted margin/padding */
-     margin: 0 !important;
-     padding: 0 !important;
-     
-     /* 🎯 KEY FIX 1: Add the required 1.4rem gap AFTER each row */
-     margin-right: 1.4rem; 
-     
-     /* Ensure the third row doesn't have an extra margin at the very end of the track */
      &:last-child {
          margin-right: 0 !important;
      }
@@ -3185,76 +3059,53 @@ header { z-index: 100100 !important; }
     transform: translateX(0);
   }
   to {
-    /* 🎯 KEY FIX 2: Scroll the width of 1/3 of the track, plus the 1.4rem margin that 
-       separates Row 1 from Row 2. */
+    
     transform: translateX(calc(-33.333% - 1.4rem)); 
   }
-}
-@media (min-width: 1024px) {
+} */
+/* @media (min-width: 1024px) {
     
   .home-clients-track {
-    /* Ensures no internal gap between rows */
+    
     gap: 0 !important; 
   }
   
   .home-clients-row {
+     
      margin: 0 !important;
      padding: 0 !important;
      
-     /* The 1.4rem margin creates the desired gap after the row */
      margin-right: 1.4rem; 
-  }
-  
-  /* Selectors must ensure only the last row doesn't have the margin-right */
-  /* Since we don't have access to the full CSS file structure, ensure this rule is applied last */
-  .home-clients-row:last-child {
-      margin-right: 0 !important;
+     
+     &:last-child {
+         margin-right: 0 !important;
+     }
   }
 }
-:root {
-  /* Increase duration slightly to help browser with calculation */
-  --scroll-duration: 40s; 
-}
-
 @keyframes homeLogosMarquee {
   from {
     transform: translateX(0);
   }
   to {
-    /* 🎯 FINAL FIX: Use calc() to subtract the required margin (1.4rem) 
-       from the percentage scroll distance (33.333%).
-       This combination forces the browser to align the content boundary.
-    */
+    
     transform: translateX(calc(-33.333% - 1.4rem)); 
   }
-}
-/* --- Extreme Precision Keyframe Fix (If 33.333% fails) --- */
-@keyframes homeLogosMarquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* Use extremely high precision percentage */
-    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
-  }
-}
-@media (min-width: 1024px) {
-  
+} */
+/* @media (min-width: 1024px) {
+    
   .home-clients-track {
-    /* 🎯 KEY FIX 1: Set the GAP property here. It will apply BETWEEN the three rows. */
+    
     gap: 1.4rem !important; 
     
-    /* Ensure other animation properties are set */
     transform: translateZ(0);
     will-change: transform;
     display: inline-flex;
   }
   
   .home-clients-row {
-    /* KEY FIX 2: Clear all custom margins/padding that might conflict */
+    
     margin: 0 !important;
     padding: 0 !important;
-    /* This gap applies to the logos *inside* the row (Avizva/Incedo) */
     gap: 1.4rem; 
   }
 }
@@ -3263,51 +3114,16 @@ header { z-index: 100100 !important; }
     transform: translateX(0);
   }
   to {
-    /* 🎯 FINAL KEY FIX: Scroll 1/3 of the track PLUS the 1.4rem gap */
+    
     transform: translateX(calc(-33.3333333333% - 1.4rem)); 
   }
-}
-/* --- Mobile Infinite Scroll Enable (767px and below) --- */
-@media (max-width: 1023px) {
-    
-    /* Re-enable overflow and masking */
-    .home-clients-strip {
-        overflow: hidden !important;
-        mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%) !important;
-    }
-    
-    /* Ensure track is set up for animation */
-    .home-clients-track {
-        animation: homeLogosMarquee 30s linear infinite !important; /* Use a slower duration for mobile */
-        will-change: transform;
-        display: inline-flex !important;
-        flex-wrap: nowrap !important; /* Prevent wrapping */
-        gap: 1.4rem !important; /* Restore the track gap */
-        
-        /* Apply GPU hint */
-        transform: translateZ(0); 
-    }
-
-    /* Remove previous static layout centering */
-    .home-clients-row {
-        justify-content: flex-start !important;
-    }
-}
-@keyframes homeLogosMarquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* Final compensation for three rows (33.333%) plus the one separating gap (1.4rem) */
-    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
-  }
-}
+} */
 /* --- FIX: Mobile/Tablet Infinite Scroll Enable (1023px and below) --- */
 @media (max-width: 1023px) {
     
     /* 1. Track setup for animation */
     .home-clients-track {
-        animation: homeLogosMarquee 30s linear infinite !important; /* Use a slower duration for mobile */
+        /* animation: homeLogosMarquee 30s linear infinite !important; */
         will-change: transform;
         
         /* 🎯 KEY FIX: Force single line and make it wider than the viewport */
@@ -3334,12 +3150,187 @@ header { z-index: 100100 !important; }
         margin-right: 0 !important; /* Clear any lingering desktop margin */
     }
 }
-@keyframes homeLogosMarquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* Final compensation for three rows (33.333%) plus the one separating gap (1.4rem) */
-    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
-  }
+/* --- Desktop Positioning (min-width: 1024px) --- */
+@media (min-width: 1024px) {
+    
+    /* 1. Home Page: Full height, set as positioning context */
+    #home.active {
+        position: relative !important; /* Context for absolute positioning */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important; 
+        min-height: 100vh; /* Use full viewport height */
+        box-sizing: border-box;
+    }
+    
+    /* 2. Hero Block: Contains the Votive logo (must be centered) */
+    .hero {
+        /* Allow the hero to take up max space above the strip */
+        flex-grow: 1; 
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important; 
+        justify-content: center !important; /* Keeps Votive logo vertically centered */
+        
+        padding-top: calc(var(--header-height) + 40px); 
+        padding-bottom: 0; /* Remove padding here to push strip closer */
+    }
+
+    /* 3. Client Logos Strip Anchor (Positioned) */
+    .home-clients-strip {
+        position: absolute !important; /* Ignore flex flow */
+        bottom: 0 !important; /* 🎯 KEY FIX: Anchors it to the very bottom */
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+
+        /* Padding for internal height */
+        padding-top: 1.5rem !important; 
+        padding-bottom: 1.5rem !important;
+        
+        /* Ensure it sits on top of any background elements */
+        z-index: 50; 
+    }
+
+    /* 4. Trusted By Label (Keep the gap you requested) */
+    .home-client-label {
+        margin-bottom: 2rem !important;
+        margin-top: 0 !important; 
+    }
+
+    /* --- Logo Size Overrides (Ensuring they remain large) --- */
+    .home-client-logo {
+        width: 100px !important;
+        height: 55px !important;
+    }
+    .home-client-logo img {
+        max-height: 38px !important;
+    }
+    .home-clients-row {
+        gap: 1.8rem !important;
+    }
+    
+    /* --- Final Vertical Center Correction --- */
+    .hero {
+        transform: translateY(-8%) !important; /* Pull Votive logo up to visual center */
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* --- JS Marquee Setup --- */
+    .home-clients-track {
+        transform: translateZ(0); /* Enable GPU for JS */
+        will-change: transform;
+        /* Animation is controlled by JS - no CSS animation properties here */
+        animation: none !important; 
+    }
+}
+/* --- FIX: Remove Background from Dynamic Logo Strip --- */
+
+.home-clients-strip {
+  /* 🎯 KEY FIX 1: Set the background to fully transparent */
+  background: transparent !important;
+  
+  /* 🎯 KEY FIX 2: Remove the blur filter */
+  backdrop-filter: none !important;
+  
+  /* Optional: Remove the top/bottom borders if you want the strip to fully blend */
+  border-top: none !important;
+  border-bottom: none !important;
+  
+  /* Adjust padding to keep logos visually lifted from the edge */
+  padding-top: 1.25rem !important;
+  padding-bottom: 1.25rem !important;
+}
+
+/* Ensure the logos themselves remain visible (they use background: #f2f6fa) */
+.home-client-logo {
+  /* Ensure logo cards do not inherit transparency */
+  background: #f2f6fa !important; 
+}
+/* --- Desktop Layout: Fixed 3-Logo Center View (min-width: 1024px) --- */
+@media (min-width: 1024px) {
+    
+    /* 1. Home Page: Revert to standard flex centering (to center logo strip) */
+    #home.active {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        /* Center content block vertically in the middle */
+        justify-content: center !important; 
+        align-items: center !important; 
+        min-height: 100vh;
+        transform: none !important; /* Clear any previous transformations */
+    }
+    
+    /* 2. Hero Block: Contains Votive logo (keep content together) */
+    .hero {
+        /* Allow the hero content to be centered vertically by the parent #home */
+        flex-grow: 0; 
+        display: flex !important;
+        flex-direction: column;
+        align-items: center !important; 
+        justify-content: center !important; 
+        
+        /* Clear positioning/padding from the previous complex fixes */
+        padding-top: 0 !important; 
+        padding-bottom: 0 !important;
+        transform: none !important; /* Clear Y-axis offset */
+    }
+
+    /* 3. Votive Logo Positioning: Adjust margin to fine-tune center */
+    .hero-logo {
+        margin-bottom: 0.5rem !important; /* Adjust spacing below logo */
+    }
+    
+    /* 4. Client Logos Strip (Fixed Width & Centering) */
+    .home-clients-strip {
+        /* 🎯 KEY FIX: Remove absolute positioning and revert to normal flow */
+        position: static !important; 
+        width: 380px !important; /* FIXED WIDTH for 3 wide logos + 2 gaps (Adjust this value if needed) */
+        
+        /* Center the strip relative to the viewport (already handled by #home.active) */
+        margin-top: 2rem !important; /* Add space below Votive logo */
+        margin-bottom: 0 !important; 
+        
+        /* Re-enable overflow to hide side logos */
+        overflow: hidden !important; 
+        
+        /* Clear background and padding to fit the new context */
+        background: transparent !important;
+        padding: 0 !important; 
+    }
+
+    /* 5. Logo Track: Position track to center the 3 visible logos */
+    .home-clients-track {
+        /* Set fixed position to center the 3 visible logos */
+        position: relative;
+        left: 50%;
+        
+        /* 🎯 KEY FIX: Translate track back by 50% to align the center logo */
+        transform: translateX(calc(-50% - 120px)); /* Translate left by half the track width + half the width of 1.5 logos (approx 120px) to center 3 logos */
+        
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 1.8rem; /* Keep gap */
+    }
+
+    /* 6. Trusted By Label */
+    .home-client-label {
+        margin-bottom: 1.5rem !important; /* Standard gap above the strip */
+        margin-top: 1rem !important; /* Closer to the Votive logo */
+    }
+
+    /* 7. Logo Size Overrides (Ensuring they remain large) */
+    .home-client-logo {
+        width: 100px !important;
+        height: 55px !important;
+        flex-shrink: 0; /* Important: prevents shrinking */
+    }
+    .home-client-logo img {
+        max-height: 38px !important;
+    }
+    .home-clients-row {
+        gap: 1.8rem !important;
+    }
 }

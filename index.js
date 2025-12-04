@@ -1,14 +1,6 @@
 /**
  * index.js — Full app script
- * - SPA navigation via hash (supports #page?item=service-id)
- * - Shows/hides service & consulting detail views
- * - Keeps parent page heading/intro hidden while a specific detail is shown
- * - Mobile nav toggle + hamburger
- * - Floating mobile contact button jump
- * - Scroll-to-top control
- * - Small accessibility & defensive logging
- *
- * Load this as a module (same as your <script type="module" src="index.js">).
+ * [EXISTING FUNCTIONALITY OMITTED FOR BREVITY]
  */
 
 /* --- App Setup (mouse reactive variables) --- */
@@ -25,7 +17,7 @@ if (app) {
   window.addEventListener('mousemove', handleMouseMove, { passive: true });
 }
 
-/* --- Service Detail Content --- */
+/* --- Service Detail Content (Your Original Data) --- */
 const serviceDetails = {
   'contract-staffing': {
     title: 'Contract Staffing Solutions',
@@ -356,7 +348,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-window.addEventListener('hashchange', handleHashChange);
+window.addEventListener('hashchange', handleHashchange);
 
 /* --- Scroll to top button --- */
 const scrollTopButton = document.querySelector('.scroll-to-top');
@@ -398,3 +390,149 @@ if (scrollTopButton) {
    - Object.keys(serviceDetails) -> list of available ids
    - showServiceDetail('leadership-hiring') -> force show a detail
 */
+
+/* --- JS Infinite Scroll Solution --- */
+const marqueeSpeed = 0.5; // Controls the speed (0.5px per frame)
+let scrollPosition = 0;
+let rowWidth = 0;
+let animationFrameId = null;
+
+const homeClientsTrack = document.querySelector('.home-clients-track');
+const homeClientsRow = document.querySelector('.home-clients-row'); // Use the first row for width
+
+const isDesktop = () => window.innerWidth >= 1024;
+
+/* --- New Function: Static Center Offset Calculation --- */
+function calculateInitialOffset() {
+    if (!homeClientsTrack || !homeClientsRow) return 0;
+    
+    // Get the computed gap size (1.8rem on desktop)
+    const baseFontSize = parseFloat(getComputedStyle(document.body).fontSize);
+    const gapSize = 1.8 * baseFontSize; 
+    
+    // Total width of the fixed strip container (380px from CSS)
+    const containerWidth = 380; 
+    
+    // Width of a single logo pill (100px from CSS)
+    const logoWidth = 100;
+
+    // The desired center view is the 3rd, 4th, and 5th logos (index 2, 3, 4) in Row 1.
+    // The track starts at the 1st logo of Row 1 (Publicis Sapient).
+    
+    // We want to offset the entire track so the 3rd logo (Innovaccer) starts appearing 
+    // on the left side of the 380px container.
+    
+    // Total width of the first 2 logos + 2 gaps: (2 * 100px) + (2 * 1.8rem in px)
+    const offsetToThirdLogoStart = (2 * logoWidth) + (2 * gapSize);
+    
+    // To center 3 logos, we need to shift the track left by the start position of the 
+    // desired center point. We will aim for the 3rd logo (Innovaccer) to be centered in the strip.
+    
+    // Half the visible width: containerWidth / 2 = 190px
+    
+    // 🎯 Target: Shift the track left so the 3rd logo (Innovaccer) starts visible at the edge.
+    // Offset = (Width of Logos 1 & 2 + their Gaps) - (Half the width of the 3rd logo)
+    const initialOffset = offsetToThirdLogoStart - (logoWidth / 2) - gapSize; // Approx -100px on default
+    
+    // Since the scroll moves left (negative), we apply the negative offset.
+    return -initialOffset; 
+}
+
+
+function calculateMarqueeWidths() {
+    if (!homeClientsTrack || !homeClientsRow) return 0;
+
+    const baseFontSize = parseFloat(getComputedStyle(document.body).fontSize);
+    let gapRem = isDesktop() ? 1.8 : 1.4;
+    let gapSize = gapRem * baseFontSize;
+
+    let rowOneContentWidth = homeClientsRow.scrollWidth;
+
+    // The actual scroll distance: Row Content Width + Inter-Row Gap
+    rowWidth = rowOneContentWidth + gapSize;
+    
+    return rowWidth > 0 ? rowWidth : 0; 
+}
+
+function marqueeLoop() {
+    if (!homeClientsTrack) {
+        stopMarquee();
+        return;
+    }
+    
+    // Recalculate if width is zero (e.g., first run or resize)
+    if (rowWidth === 0) {
+        rowWidth = calculateMarqueeWidths();
+    }
+    if (rowWidth === 0 || !isDesktop()) {
+        stopMarquee();
+        return;
+    }
+
+    // 1. Update position
+    scrollPosition -= marqueeSpeed;
+
+    // 2. Check for reset point (when we have scrolled exactly one calculated row's width)
+    if (scrollPosition <= -rowWidth) {
+        // Key Fix: INSTANTLY jump back by one full row width (seamless pixel reset)
+        scrollPosition += rowWidth;
+    }
+
+    // 3. Apply transformation
+    homeClientsTrack.style.transform = `translateX(${scrollPosition}px)`;
+
+    // 4. Continue loop
+    animationFrameId = requestAnimationFrame(marqueeLoop);
+}
+
+function startMarquee() {
+    if (isDesktop()) {
+        // Desktop (Infinite Scroll - Must run)
+        stopMarquee(); // Stop any previous loop
+        
+        if (homeClientsTrack) {
+            homeClientsTrack.style.animation = 'none'; // Clear CSS animation
+            
+            // 🎯 KEY FIX: Calculate initial visual offset to hide the blank start
+            const initialOffset = calculateInitialOffset();
+            scrollPosition = initialOffset; // Set initial scroll position
+            homeClientsTrack.style.transform = `translateX(${scrollPosition}px)`;
+        }
+        
+        rowWidth = 0; // Force recalculation
+        calculateMarqueeWidths();
+        
+        // Start the JS loop
+        if (rowWidth > 0 && animationFrameId === null) {
+            marqueeLoop();
+        }
+    } else {
+        // Mobile/Tablet (Static/Centered - Must stop JS)
+        stopMarquee();
+        if (homeClientsTrack) {
+             homeClientsTrack.style.transform = `translateX(0)`; // Clear any desktop transform
+             homeClientsTrack.style.animation = 'none';
+        }
+    }
+}
+
+function stopMarquee() {
+    if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+}
+
+// Attach event listeners for dynamic start/stop
+window.addEventListener('load', startMarquee);
+window.addEventListener('resize', () => {
+    // Use a small debounce for performance on resize
+    clearTimeout(window.resizeTimeout);
+    window.resizeTimeout = setTimeout(() => {
+        stopMarquee();
+        startMarquee();
+    }, 100);
+});
+
+// Initial start logic
+startMarquee();
