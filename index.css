@@ -3267,3 +3267,38 @@ header { z-index: 100100 !important; }
     transform: translateX(calc(-33.3333333333% - 1.4rem)); 
   }
 }
+/* --- Mobile Infinite Scroll Enable (767px and below) --- */
+@media (max-width: 1023px) {
+    
+    /* Re-enable overflow and masking */
+    .home-clients-strip {
+        overflow: hidden !important;
+        mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%) !important;
+    }
+    
+    /* Ensure track is set up for animation */
+    .home-clients-track {
+        animation: homeLogosMarquee 30s linear infinite !important; /* Use a slower duration for mobile */
+        will-change: transform;
+        display: inline-flex !important;
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+        gap: 1.4rem !important; /* Restore the track gap */
+        
+        /* Apply GPU hint */
+        transform: translateZ(0); 
+    }
+
+    /* Remove previous static layout centering */
+    .home-clients-row {
+        justify-content: flex-start !important;
+    }
+}
+@keyframes homeLogosMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Final compensation for three rows (33.333%) plus the one separating gap (1.4rem) */
+    transform: translateX(calc(-33.3333333333% - 1.4rem)); 
+  }
+}
