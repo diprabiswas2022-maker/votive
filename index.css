@@ -3334,3 +3334,15 @@ header { z-index: 100100 !important; }
         gap: 1.8rem !important;
     }
 }
+/* Tablet + mobile: static, centered row (Original Block to Replace) */
+@media (max-width: 1023px) {
+  .home-clients-strip {
+    mask-image: none;
+  }
+
+  .home-clients-track {
+    /* animation: none; <--- REMOVE THESE STATIC RULES */
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

@@ -1,6 +1,14 @@
 /**
  * index.js — Full app script
- * [EXISTING FUNCTIONALITY OMITTED FOR BREVITY]
+ * - SPA navigation via hash (supports #page?item=service-id)
+ * - Shows/hides service & consulting detail views
+ * - Keeps parent page heading/intro hidden while a specific detail is shown
+ * - Mobile nav toggle + hamburger
+ * - Floating mobile contact button jump
+ * - Scroll-to-top control
+ *
+ * NOTE: This version integrates the pixel-perfect JavaScript Infinite Scroll solution
+ * and enables it on ALL screen sizes (desktop, tablet, and mobile).
  */
 
 /* --- App Setup (mouse reactive variables) --- */
@@ -290,8 +298,8 @@ function handleHashChange() {
   handleHeaderScroll();
 
   if (queryString) {
-    const params = new URLSearchParams(queryString);
-    const serviceId = params.get('item');
+    params = new URLSearchParams(queryString);
+    serviceId = params.get('item');
     if (serviceId) {
       if (serviceDetails[serviceId]) {
         showServiceDetail(serviceId);
@@ -402,43 +410,7 @@ const homeClientsRow = document.querySelector('.home-clients-row'); // Use the f
 
 const isDesktop = () => window.innerWidth >= 1024;
 
-/* --- New Function: Static Center Offset Calculation --- */
-function calculateInitialOffset() {
-    if (!homeClientsTrack || !homeClientsRow) return 0;
-    
-    // Get the computed gap size (1.8rem on desktop)
-    const baseFontSize = parseFloat(getComputedStyle(document.body).fontSize);
-    const gapSize = 1.8 * baseFontSize; 
-    
-    // Total width of the fixed strip container (380px from CSS)
-    const containerWidth = 380; 
-    
-    // Width of a single logo pill (100px from CSS)
-    const logoWidth = 100;
-
-    // The desired center view is the 3rd, 4th, and 5th logos (index 2, 3, 4) in Row 1.
-    // The track starts at the 1st logo of Row 1 (Publicis Sapient).
-    
-    // We want to offset the entire track so the 3rd logo (Innovaccer) starts appearing 
-    // on the left side of the 380px container.
-    
-    // Total width of the first 2 logos + 2 gaps: (2 * 100px) + (2 * 1.8rem in px)
-    const offsetToThirdLogoStart = (2 * logoWidth) + (2 * gapSize);
-    
-    // To center 3 logos, we need to shift the track left by the start position of the 
-    // desired center point. We will aim for the 3rd logo (Innovaccer) to be centered in the strip.
-    
-    // Half the visible width: containerWidth / 2 = 190px
-    
-    // 🎯 Target: Shift the track left so the 3rd logo (Innovaccer) starts visible at the edge.
-    // Offset = (Width of Logos 1 & 2 + their Gaps) - (Half the width of the 3rd logo)
-    const initialOffset = offsetToThirdLogoStart - (logoWidth / 2) - gapSize; // Approx -100px on default
-    
-    // Since the scroll moves left (negative), we apply the negative offset.
-    return -initialOffset; 
-}
-
-
+/* --- Function: Calculate Marquee Widths --- */
 function calculateMarqueeWidths() {
     if (!homeClientsTrack || !homeClientsRow) return 0;
 
@@ -446,12 +418,19 @@ function calculateMarqueeWidths() {
     let gapRem = isDesktop() ? 1.8 : 1.4;
     let gapSize = gapRem * baseFontSize;
 
+    // Get the total width of the content of the first row (logos + internal gaps)
     let rowOneContentWidth = homeClientsRow.scrollWidth;
 
     // The actual scroll distance: Row Content Width + Inter-Row Gap
     rowWidth = rowOneContentWidth + gapSize;
     
     return rowWidth > 0 ? rowWidth : 0; 
+}
+
+/* --- Function: Calculate Initial Offset for Populated Start --- */
+function calculateInitialOffset() {
+    // We want the scroll to start with the track fully populated, so scrollPosition starts at 0.
+    return 0; 
 }
 
 function marqueeLoop() {
@@ -464,7 +443,7 @@ function marqueeLoop() {
     if (rowWidth === 0) {
         rowWidth = calculateMarqueeWidths();
     }
-    if (rowWidth === 0 || !isDesktop()) {
+    if (rowWidth === 0) {
         stopMarquee();
         return;
     }
@@ -486,33 +465,26 @@ function marqueeLoop() {
 }
 
 function startMarquee() {
-    if (isDesktop()) {
-        // Desktop (Infinite Scroll - Must run)
-        stopMarquee(); // Stop any previous loop
+    // Run scroll on ALL sizes
+    stopMarquee(); // Stop any previous loop
+    
+    if (homeClientsTrack) {
+        homeClientsTrack.style.animation = 'none'; // Clear CSS animation
         
-        if (homeClientsTrack) {
-            homeClientsTrack.style.animation = 'none'; // Clear CSS animation
-            
-            // 🎯 KEY FIX: Calculate initial visual offset to hide the blank start
-            const initialOffset = calculateInitialOffset();
-            scrollPosition = initialOffset; // Set initial scroll position
-            homeClientsTrack.style.transform = `translateX(${scrollPosition}px)`;
-        }
+        // 🎯 KEY FIX: Start scroll position at 0 so Row 1 is immediately visible
+        scrollPosition = calculateInitialOffset(); // Should be 0
+        homeClientsTrack.style.transform = `translateX(${scrollPosition}px)`;
         
-        rowWidth = 0; // Force recalculation
-        calculateMarqueeWidths();
-        
-        // Start the JS loop
-        if (rowWidth > 0 && animationFrameId === null) {
-            marqueeLoop();
-        }
-    } else {
-        // Mobile/Tablet (Static/Centered - Must stop JS)
-        stopMarquee();
-        if (homeClientsTrack) {
-             homeClientsTrack.style.transform = `translateX(0)`; // Clear any desktop transform
-             homeClientsTrack.style.animation = 'none';
-        }
+        // Ensure width is max-content
+        homeClientsTrack.style.width = 'max-content'; 
+    }
+    
+    rowWidth = 0; // Force recalculation
+    calculateMarqueeWidths();
+    
+    // Start the JS loop
+    if (rowWidth > 0 && animationFrameId === null) {
+        marqueeLoop();
     }
 }
 
