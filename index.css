@@ -2387,3 +2387,16 @@ header { z-index: 100100 !important; }
     margin: 2.5rem 0;
   }
 }
+/* Remove blue box for Contact Us inside hamburger menu (mobile only) */
+@media (max-width: 767px) {
+  nav ul .contact-button,
+  nav ul .contact-button:hover,
+  nav ul .contact-button:active,
+  nav ul .contact-button:focus {
+    background: transparent !important;
+    color: var(--text-color) !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+}
