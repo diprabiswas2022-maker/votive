@@ -3729,3 +3729,42 @@ header { z-index: 100100 !important; }
     gap: 1rem !important;
   }
 }
+/* === FINAL TUNING: logo cards size & 3-at-a-time view === */
+
+/* Base size (desktop/tablet) – nicer ratio */
+.home-client-logo {
+  width: 120px !important;
+  height: 70px !important;
+  border-radius: 14px !important;
+  padding: 8px 12px !important;
+}
+
+.home-client-logo img {
+  max-height: 40px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* Mobile: show ~3 logos at a time, bigger in both width & height */
+@media (max-width: 767px) {
+  .home-clients-strip {
+    max-width: 100% !important;
+    padding: 0.75rem 0 !important;
+  }
+
+  .home-clients-track {
+    gap: 0.6rem !important;
+  }
+
+  .home-client-logo {
+    width: 30vw !important;      /* ≈ 3 cards across */
+    max-width: 30vw !important;
+    height: 70px !important;      /* same height as desktop for consistency */
+    margin: 0 0.25rem !important;
+  }
+
+  .home-client-logo img {
+    max-height: 38px !important;
+  }
+}
