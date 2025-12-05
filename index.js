@@ -239,17 +239,26 @@
   var pageOnly = hash.split("?")[0]; // ignore ? for which page
   var id = pageOnly.replace("#", "") || "home";
 
+  // 1) Activate the right page
   pages.forEach(function (p) {
     p.classList.toggle("active", p.id === id);
   });
 
-  // 🔝 Force scroll to top for ALL pages & links (header, footer, detail links)
-  // do it in multiple ways for mobile browsers
-  window.scrollTo(0, 0);
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  // 2) FORCE scroll to top on EVERY hash change (desktop + mobile)
+  function forceTop() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }
 
-  // body overflow rules
+  // call immediately
+  forceTop();
+  // then again in the next frame (for mobile browsers that restore position)
+  setTimeout(forceTop, 0);
+  // and once more after content/layout settles
+  setTimeout(forceTop, 80);
+
+  // 3) Body overflow rules
   if (document.body.classList.contains("menu-open")) {
     // keep as is when mobile menu is open
   } else if (id === "home" && window.innerWidth <= 767) {
@@ -258,14 +267,13 @@
     document.body.style.overflow = "";
   }
 
-  // detail views
+  // 4) Detail views logic
   if (id === "services" || id === "consulting") {
     handleDetailFromHash();
   } else {
     clearDetailContainers();
   }
 }
-
 
   setActivePageFromHash();
   window.addEventListener("hashchange", setActivePageFromHash);
