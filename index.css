@@ -3580,9 +3580,9 @@ header { z-index: 100100 !important; }
 }
 
 /* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
+/* @media (prefers-reduced-motion: reduce) {
   .home-clients-track {
     animation: none;
     transform: none;
   }
-}
+} */
