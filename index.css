@@ -3586,3 +3586,14 @@ header { z-index: 100100 !important; }
     transform: none;
   }
 } */
+/* 🔥 FINAL OVERRIDE: Ensure the track is a single, non-wrapping row on all devices for the JS marquee */
+@media (max-width: 1023px) {
+  #home .home-clients-track {
+    /* KEY FIX: Force single line and left alignment */
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    /* Ensure no residual CSS animation/transform applies */
+    animation: none !important;
+    transform: none !important;
+  }
+}

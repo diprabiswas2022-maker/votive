@@ -1,4 +1,4 @@
-// index.js – simple, non-module, runs everywhere
+// index.js (Complete File)
 
 (function () {
   var header = document.querySelector("header");
@@ -10,7 +10,8 @@
   var root = document.documentElement;
   var homePage = document.getElementById("home");
 
-  /* ---------- SPA PAGE SWITCHING ---------- */
+  /* ---------------------- 1. SPA PAGE SWITCHING ---------------------- */
+
   function setActivePageFromHash() {
     var hash = window.location.hash || "#home";
     hash = hash.split("?")[0]; // ignore ?item=...
@@ -19,12 +20,23 @@
     pages.forEach(function (p) {
       p.classList.toggle("active", p.id === id);
     });
+
+    // Ensure body overflow is reset unless menu is open
+    if (document.body.classList.contains("menu-open")) {
+      // Keep menu-open state
+    } else if (id === "home" && window.innerWidth <= 767) {
+      // The CSS fix for mobile home page handles the overflow
+      document.body.style.overflow = 'hidden'; 
+    } else {
+      document.body.style.overflow = '';
+    }
   }
 
   setActivePageFromHash();
   window.addEventListener("hashchange", setActivePageFromHash);
 
-  /* ---------- NAV LINKS (close mobile menu on click) ---------- */
+  /* ---------------------- 2. NAV LINKS & MOBILE MENU ---------------------- */
+
   navLinks.forEach(function (link) {
     link.addEventListener("click", function (e) {
       var href = link.getAttribute("href") || "";
@@ -34,6 +46,7 @@
       e.preventDefault();
       window.location.hash = base;
 
+      // Close mobile menu
       if (window.innerWidth <= 767 && navList && hamburger) {
         navList.classList.remove("nav-active");
         hamburger.classList.remove("toggle-active");
@@ -42,7 +55,6 @@
     });
   });
 
-  /* ---------- HAMBURGER MENU ---------- */
   if (hamburger && navList) {
     hamburger.addEventListener("click", function () {
       hamburger.classList.toggle("toggle-active");
@@ -51,13 +63,15 @@
     });
   }
 
-  /* ---------- HEADER SCROLL + SCROLL TO TOP ---------- */
+  /* ---------------------- 3. HEADER SCROLL & SCROLL TO TOP ---------------------- */
+
   function handleScroll() {
     if (header) {
       if (window.scrollY > 10) header.classList.add("scrolled");
       else header.classList.remove("scrolled");
     }
 
+    // Scroll to top button logic (disabled by CSS override, but keep handler)
     if (scrollBtn) {
       if (window.scrollY > 300) scrollBtn.classList.add("visible");
       else scrollBtn.classList.remove("visible");
@@ -74,7 +88,8 @@
     });
   }
 
-  /* ---------- HERO SPOTLIGHT EFFECT ---------- */
+  /* ---------------------- 4. HERO SPOTLIGHT EFFECT ---------------------- */
+
   if (homePage) {
     homePage.addEventListener("pointermove", function (e) {
       var rect = homePage.getBoundingClientRect();
@@ -85,9 +100,8 @@
     });
   }
 
-  /* =======================================================
-     HOME CLIENT LOGO MARQUEE – works on phone / tablet / laptop
-     ======================================================= */
+  /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
+
   var strip = document.querySelector(".home-clients-strip");
   var track = strip ? strip.querySelector(".home-clients-track") : null;
 
@@ -98,11 +112,12 @@
 
     if (!rows.length) return;
 
-    // Force one long horizontal track
+    // Initial setup for JS movement
     track.style.display = "flex";
-    track.style.flexWrap = "nowrap";
+    track.style.flexWrap = "nowrap"; // Crucial for movement
     track.style.willChange = "transform";
     track.style.transform = "translateX(0px)";
+    track.style.animation = "none"; // Disable potential CSS animation
 
     rows.forEach(function (row) {
       row.style.display = "flex";
@@ -111,11 +126,17 @@
 
     var x = 0;
     var lastTime = null;
-    var SPEED = 40; // px per second
+    var SPEED = 40; // px per second (Adjust this value to change scroll speed)
 
     function step(timestamp) {
+      // Stop animation if user prefers reduced motion
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          window.requestAnimationFrame(step);
+          return;
+      }
+
       if (lastTime == null) lastTime = timestamp;
-      var dt = (timestamp - lastTime) / 1000; // seconds
+      var dt = (timestamp - lastTime) / 1000; // time elapsed in seconds
       lastTime = timestamp;
 
       var firstRowRect = rows[0].getBoundingClientRect();
@@ -124,7 +145,7 @@
       if (rowWidth > 0) {
         x -= SPEED * dt;
 
-        // when first row has fully left, jump by its width
+        // Loop the marquee when the first row is off-screen
         if (-x >= rowWidth) {
           x += rowWidth;
         }
@@ -135,7 +156,7 @@
       window.requestAnimationFrame(step);
     }
 
-    // Start once images are ready (with a safety timeout for iOS)
+    // Start the loop after checking image load status
     var imgs = track.querySelectorAll("img");
     if (!imgs.length) {
       window.requestAnimationFrame(step);
@@ -157,9 +178,11 @@
         }
       });
 
-      // fallback in case some load events never fire on mobile
+      // Fallback timeout to ensure animation starts even with loading issues
       setTimeout(function () {
-        window.requestAnimationFrame(step);
+        if (loaded < imgs.length) {
+             window.requestAnimationFrame(step);
+        }
       }, 1500);
     }
   }
