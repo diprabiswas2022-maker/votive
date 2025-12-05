@@ -3597,3 +3597,37 @@ header { z-index: 100100 !important; }
     transform: none !important;
   }
 }
+
+/* =======================================================
+   FINAL MOBILE MARQUEE OVERRIDE (Must be at the very end of CSS)
+   ======================================================= */
+@media (max-width: 1023px) {
+  
+  /* 1. Force the track to be a single, non-wrapping, scrollable line */
+  .home-clients-track {
+    display: flex !important;
+    flex-wrap: nowrap !important; /* Forces a single line */
+    justify-content: flex-start !important; /* Starts content on the left */
+    width: max-content !important; /* Allows the track to expand horizontally */
+    
+    /* 2. Clear all competing animations or transforms */
+    animation: none !important;
+    transform: none !important;
+    
+    /* Ensure no margin/padding is interfering with the start position */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* 3. Ensure the outer container allows for the strip to be full width */
+  .home-clients-strip {
+    max-width: 100% !important; /* Remove static width constraint */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* 4. Ensure individual rows and logos don't shrink */
+  .home-clients-row {
+      flex-shrink: 0 !important;
+  }
+}
