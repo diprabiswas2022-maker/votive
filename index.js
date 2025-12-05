@@ -332,81 +332,88 @@
 
   /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
-  var strip = document.querySelector(".home-clients-strip");
-  var track = strip ? strip.querySelector(".home-clients-track") : null;
+var strip = document.querySelector(".home-clients-strip");
+var track = strip ? strip.querySelector(".home-clients-track") : null;
 
-  if (strip && track) {
-    var rows = Array.prototype.slice.call(
-      track.querySelectorAll(".home-clients-row")
-    );
+if (strip && track) {
+  var rows = Array.prototype.slice.call(
+    track.querySelectorAll(".home-clients-row")
+  );
 
-    if (!rows.length) return;
+  if (!rows.length) return;
 
-    track.style.display = "flex";
-    track.style.flexWrap = "nowrap";
-    track.style.willChange = "transform";
-    track.style.transform = "translateX(0px)";
-    track.style.animation = "none";
+  track.style.display = "flex";
+  track.style.flexWrap = "nowrap"; // Crucial for movement
+  track.style.willChange = "transform";
+  track.style.animation = "none"; // Disable potential CSS animation
 
-    rows.forEach(function (row) {
-      row.style.display = "flex";
-      row.style.flexShrink = "0";
+  rows.forEach(function (row) {
+    row.style.display = "flex";
+    row.style.flexShrink = "0";
+  });
+
+  var x = 0;
+  var lastTime = null;
+  var SPEED = 40; // px per second
+
+  function step(timestamp) {
+    // Stop animation if user prefers reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.requestAnimationFrame(step);
+      return;
+    }
+
+    if (lastTime == null) lastTime = timestamp;
+    var dt = (timestamp - lastTime) / 1000; // seconds
+    lastTime = timestamp;
+
+    var firstRowRect = rows[0].getBoundingClientRect();
+    var rowWidth = firstRowRect.width;
+
+    if (rowWidth > 0) {
+      x -= SPEED * dt;
+
+      // Loop the marquee when the first row is off-screen
+      if (-x >= rowWidth) {
+        x += rowWidth;
+      }
+
+      // ✅ JS controls a CSS variable instead of transform directly
+      track.style.setProperty("--homeLogoOffset", x + "px");
+    }
+
+    window.requestAnimationFrame(step);
+  }
+
+  // Start the loop after checking image load status
+  var imgs = track.querySelectorAll("img");
+  if (!imgs.length) {
+    window.requestAnimationFrame(step);
+  } else {
+    var loaded = 0;
+    function maybeStart() {
+      loaded++;
+      if (loaded >= imgs.length) {
+        window.requestAnimationFrame(step);
+      }
+    }
+
+    imgs.forEach(function (img) {
+      if (img.complete) {
+        maybeStart();
+      } else {
+        img.addEventListener("load", maybeStart);
+        img.addEventListener("error", maybeStart);
+      }
     });
 
-    var x = 0;
-    var lastTime = null;
-    var SPEED = 40; // px/sec
-
-    function step(timestamp) {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // Fallback: don't wait too long
+    setTimeout(function () {
+      if (loaded < imgs.length) {
         window.requestAnimationFrame(step);
-        return;
       }
-
-      if (lastTime == null) lastTime = timestamp;
-      var dt = (timestamp - lastTime) / 1000;
-      lastTime = timestamp;
-
-      var firstRowRect = rows[0].getBoundingClientRect();
-      var rowWidth = firstRowRect.width;
-
-      if (rowWidth > 0) {
-        x -= SPEED * dt;
-        if (-x >= rowWidth) {
-          x += rowWidth;
-        }
-        track.style.transform = "translateX(" + x + "px)";
-      }
-
-      window.requestAnimationFrame(step);
-    }
-
-    var imgs = track.querySelectorAll("img");
-    if (!imgs.length) {
-      window.requestAnimationFrame(step);
-    } else {
-      var loaded = 0;
-      function maybeStart() {
-        loaded++;
-        if (loaded >= imgs.length) {
-          window.requestAnimationFrame(step);
-        }
-      }
-
-      imgs.forEach(function (img) {
-        if (img.complete) {
-          maybeStart();
-        } else {
-          img.addEventListener("load", maybeStart);
-          img.addEventListener("error", maybeStart);
-        }
-      });
-
-      setTimeout(function () {
-        if (loaded < imgs.length) {
-          window.requestAnimationFrame(step);
-        }
-      }, 1500);
-    }
+    }, 1500);
   }
+}
+
 })();

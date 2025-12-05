@@ -3687,3 +3687,6 @@ header { z-index: 100100 !important; }
         align-items: center !important;
     }
 }
+.home-clients-track {
+  transform: translateX(var(--homeLogoOffset, 0)) !important;
+}
