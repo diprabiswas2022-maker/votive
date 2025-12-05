@@ -1,21 +1,22 @@
-// index.js
-document.addEventListener("DOMContentLoaded", () => {
-  const header = document.querySelector("header");
-  const pages = document.querySelectorAll(".page");
-  const navLinks = document.querySelectorAll("header nav a[href^='#']");
-  const hamburger = document.querySelector(".hamburger");
-  const navList = document.querySelector("nav ul");
-  const scrollBtn = document.querySelector(".scroll-to-top");
-  const root = document.documentElement;
-  const homePage = document.getElementById("home");
+// index.js – simple, non-module, runs everywhere
+
+(function () {
+  var header = document.querySelector("header");
+  var pages = document.querySelectorAll(".page");
+  var navLinks = document.querySelectorAll("header nav a[href^='#']");
+  var hamburger = document.querySelector(".hamburger");
+  var navList = document.querySelector("nav ul");
+  var scrollBtn = document.querySelector(".scroll-to-top");
+  var root = document.documentElement;
+  var homePage = document.getElementById("home");
 
   /* ---------- SPA PAGE SWITCHING ---------- */
   function setActivePageFromHash() {
-    let hash = window.location.hash || "#home";
+    var hash = window.location.hash || "#home";
     hash = hash.split("?")[0]; // ignore ?item=...
-    const id = hash.replace("#", "") || "home";
+    var id = hash.replace("#", "") || "home";
 
-    pages.forEach((p) => {
+    pages.forEach(function (p) {
       p.classList.toggle("active", p.id === id);
     });
   }
@@ -24,12 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("hashchange", setActivePageFromHash);
 
   /* ---------- NAV LINKS (close mobile menu on click) ---------- */
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const href = link.getAttribute("href") || "";
-      if (!href.startsWith("#")) return;
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var href = link.getAttribute("href") || "";
+      if (!href || href.charAt(0) !== "#") return;
 
-      const base = href.split("?")[0];
+      var base = href.split("?")[0];
       e.preventDefault();
       window.location.hash = base;
 
@@ -43,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- HAMBURGER MENU ---------- */
   if (hamburger && navList) {
-    hamburger.addEventListener("click", () => {
+    hamburger.addEventListener("click", function () {
       hamburger.classList.toggle("toggle-active");
       navList.classList.toggle("nav-active");
       document.body.classList.toggle("menu-open");
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   handleScroll();
 
   if (scrollBtn) {
-    scrollBtn.addEventListener("click", (e) => {
+    scrollBtn.addEventListener("click", function (e) {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -75,75 +76,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- HERO SPOTLIGHT EFFECT ---------- */
   if (homePage) {
-    homePage.addEventListener("pointermove", (e) => {
-      const rect = homePage.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      root.style.setProperty("--mouse-x", `${x}%`);
-      root.style.setProperty("--mouse-y", `${y}%`);
+    homePage.addEventListener("pointermove", function (e) {
+      var rect = homePage.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      root.style.setProperty("--mouse-x", x + "%");
+      root.style.setProperty("--mouse-y", y + "%");
     });
   }
 
   /* =======================================================
-     HOME CLIENT LOGO MARQUEE – works on laptop, tablet, phone
+     HOME CLIENT LOGO MARQUEE – works on phone / tablet / laptop
      ======================================================= */
-  const strip = document.querySelector(".home-clients-strip");
-  const track = strip ? strip.querySelector(".home-clients-track") : null;
+  var strip = document.querySelector(".home-clients-strip");
+  var track = strip ? strip.querySelector(".home-clients-track") : null;
 
   if (strip && track) {
-    const rows = Array.from(track.querySelectorAll(".home-clients-row"));
+    var rows = Array.prototype.slice.call(
+      track.querySelectorAll(".home-clients-row")
+    );
+
     if (!rows.length) return;
 
-    // make sure everything is laid out in one long row
+    // Force one long horizontal track
     track.style.display = "flex";
     track.style.flexWrap = "nowrap";
     track.style.willChange = "transform";
     track.style.transform = "translateX(0px)";
 
-    rows.forEach((row) => {
-      row.style.flexShrink = "0";
+    rows.forEach(function (row) {
       row.style.display = "flex";
+      row.style.flexShrink = "0";
     });
 
-    let x = 0;
-    let lastTime = null;
-    const SPEED = 40; // px per second
+    var x = 0;
+    var lastTime = null;
+    var SPEED = 40; // px per second
 
     function step(timestamp) {
       if (lastTime == null) lastTime = timestamp;
-      const dt = (timestamp - lastTime) / 1000; // seconds
+      var dt = (timestamp - lastTime) / 1000; // seconds
       lastTime = timestamp;
 
-      const rowWidth = rows[0].getBoundingClientRect().width;
+      var firstRowRect = rows[0].getBoundingClientRect();
+      var rowWidth = firstRowRect.width;
 
       if (rowWidth > 0) {
         x -= SPEED * dt;
 
-        // once the first row has fully left the screen, jump it to the end
+        // when first row has fully left, jump by its width
         if (-x >= rowWidth) {
           x += rowWidth;
         }
 
-        track.style.transform = `translateX(${x}px)`;
+        track.style.transform = "translateX(" + x + "px)";
       }
 
-      requestAnimationFrame(step);
+      window.requestAnimationFrame(step);
     }
 
-    // Start marquee after images are loaded OR after a small timeout
-    const imgs = track.querySelectorAll("img");
+    // Start once images are ready (with a safety timeout for iOS)
+    var imgs = track.querySelectorAll("img");
     if (!imgs.length) {
-      requestAnimationFrame(step);
+      window.requestAnimationFrame(step);
     } else {
-      let loaded = 0;
-      const maybeStart = () => {
+      var loaded = 0;
+      function maybeStart() {
         loaded++;
         if (loaded >= imgs.length) {
-          requestAnimationFrame(step);
+          window.requestAnimationFrame(step);
         }
-      };
+      }
 
-      imgs.forEach((img) => {
+      imgs.forEach(function (img) {
         if (img.complete) {
           maybeStart();
         } else {
@@ -152,8 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // safety start in case some load events never fire (iOS quirk)
-      setTimeout(() => requestAnimationFrame(step), 1500);
+      // fallback in case some load events never fire on mobile
+      setTimeout(function () {
+        window.requestAnimationFrame(step);
+      }, 1500);
     }
   }
-});
+})();
