@@ -242,6 +242,8 @@
     pages.forEach(function (p) {
       p.classList.toggle("active", p.id === id);
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
 
     // body overflow rules
     if (document.body.classList.contains("menu-open")) {
