@@ -52,14 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ---------- HEADER SCROLL + SCROLL TO TOP ---------- */
   function handleScroll() {
-    if (!header) return;
+    if (header) {
+      if (window.scrollY > 10) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    }
 
-    if (window.scrollY > 10) header.classList.add("scrolled");
-    else header.classList.remove("scrolled");
-
-    if (!scrollBtn) return;
-    if (window.scrollY > 300) scrollBtn.classList.add("visible");
-    else scrollBtn.classList.remove("visible");
+    if (scrollBtn) {
+      if (window.scrollY > 300) scrollBtn.classList.add("visible");
+      else scrollBtn.classList.remove("visible");
+    }
   }
 
   window.addEventListener("scroll", handleScroll);
@@ -84,59 +85,62 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =======================================================
-     HOME CLIENT LOGO MARQUEE – WORKS ON LAPTOP + TABLET + PHONE
+     HOME CLIENT LOGO MARQUEE – works on laptop, tablet, phone
      ======================================================= */
   const strip = document.querySelector(".home-clients-strip");
-  const track = document.querySelector(".home-clients-track");
+  const track = strip ? strip.querySelector(".home-clients-track") : null;
 
   if (strip && track) {
     const rows = Array.from(track.querySelectorAll(".home-clients-row"));
-    if (rows.length === 0) return;
+    if (!rows.length) return;
 
-    // Layout guarantees for all devices
+    // make sure everything is laid out in one long row
     track.style.display = "flex";
     track.style.flexWrap = "nowrap";
-    track.style.position = "relative";
-    track.style.left = "0";
     track.style.willChange = "transform";
+    track.style.transform = "translateX(0px)";
+
+    rows.forEach((row) => {
+      row.style.flexShrink = "0";
+      row.style.display = "flex";
+    });
 
     let x = 0;
     let lastTime = null;
-    const SPEED = 40; // px per second – change if you want faster/slower
+    const SPEED = 40; // px per second
 
     function step(timestamp) {
-      if (!lastTime) lastTime = timestamp;
-      const dt = (timestamp - lastTime) / 1000; // seconds since last frame
+      if (lastTime == null) lastTime = timestamp;
+      const dt = (timestamp - lastTime) / 1000; // seconds
       lastTime = timestamp;
 
-      // move left
-      x -= SPEED * dt;
+      const rowWidth = rows[0].getBoundingClientRect().width;
 
-      const rowWidth = rows[0].offsetWidth;
-      if (rowWidth > 0 && -x >= rowWidth) {
-        // once first row fully left, jump it to the end
-        x += rowWidth;
+      if (rowWidth > 0) {
+        x -= SPEED * dt;
+
+        // once the first row has fully left the screen, jump it to the end
+        if (-x >= rowWidth) {
+          x += rowWidth;
+        }
+
+        track.style.transform = `translateX(${x}px)`;
       }
 
-      track.style.transform = `translateX(${x}px)`;
       requestAnimationFrame(step);
     }
 
-    function startMarquee() {
-      if (startMarquee.started) return;
-      startMarquee.started = true;
-      requestAnimationFrame(step);
-    }
-
-    // Wait for images so widths are correct (important for iOS)
+    // Start marquee after images are loaded OR after a small timeout
     const imgs = track.querySelectorAll("img");
-    if (imgs.length === 0) {
-      startMarquee();
+    if (!imgs.length) {
+      requestAnimationFrame(step);
     } else {
       let loaded = 0;
       const maybeStart = () => {
         loaded++;
-        if (loaded >= imgs.length) startMarquee();
+        if (loaded >= imgs.length) {
+          requestAnimationFrame(step);
+        }
       };
 
       imgs.forEach((img) => {
@@ -148,8 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Safety: force start after 1.5s anyway
-      setTimeout(startMarquee, 1500);
+      // safety start in case some load events never fire (iOS quirk)
+      setTimeout(() => requestAnimationFrame(step), 1500);
     }
   }
 });
