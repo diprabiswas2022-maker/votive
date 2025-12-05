@@ -3710,3 +3710,22 @@ header { z-index: 100100 !important; }
     justify-content: flex-start !important;
   }
 }
+/* --- Improve Logo Size & Visibility on Mobile --- */
+@media (max-width: 767px) {
+  .home-client-logo {
+    width: 30vw !important;   /* Larger logos */
+    min-width: 30vw !important;
+    margin: 0 1rem !important; /* Balanced spacing */
+  }
+
+  .home-client-logo img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Ensure wrapper doesn’t shrink logos */
+  .home-clients-row {
+    gap: 1rem !important;
+  }
+}
