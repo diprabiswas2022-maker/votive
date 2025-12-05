@@ -234,34 +234,38 @@
   /* ---------------------- 1. SPA PAGE SWITCHING ---------------------- */
 
   function setActivePageFromHash() {
-    var hash = window.location.hash || "#home";
+  var hash = window.location.hash || "#home";
 
-    var pageOnly = hash.split("?")[0]; // ignore ? for which page
-    var id = pageOnly.replace("#", "") || "home";
+  var pageOnly = hash.split("?")[0]; // ignore ? for which page
+  var id = pageOnly.replace("#", "") || "home";
 
-    pages.forEach(function (p) {
-      p.classList.toggle("active", p.id === id);
-    });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  pages.forEach(function (p) {
+    p.classList.toggle("active", p.id === id);
+  });
 
+  // 🔝 Force scroll to top for ALL pages & links (header, footer, detail links)
+  // do it in multiple ways for mobile browsers
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 
-    // body overflow rules
-    if (document.body.classList.contains("menu-open")) {
-      // keep as is when mobile menu is open
-    } else if (id === "home" && window.innerWidth <= 767) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    // After page is switched, handle detail views
-    if (id === "services" || id === "consulting") {
-      handleDetailFromHash();
-    } else {
-      // any other page: make sure full lists are shown
-      clearDetailContainers();
-    }
+  // body overflow rules
+  if (document.body.classList.contains("menu-open")) {
+    // keep as is when mobile menu is open
+  } else if (id === "home" && window.innerWidth <= 767) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
   }
+
+  // detail views
+  if (id === "services" || id === "consulting") {
+    handleDetailFromHash();
+  } else {
+    clearDetailContainers();
+  }
+}
+
 
   setActivePageFromHash();
   window.addEventListener("hashchange", setActivePageFromHash);
@@ -330,8 +334,9 @@
     });
   }
 
-  /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
+/* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
+/* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
 var strip = document.querySelector(".home-clients-strip");
