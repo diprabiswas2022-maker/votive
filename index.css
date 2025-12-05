@@ -3631,3 +3631,59 @@ header { z-index: 100100 !important; }
       flex-shrink: 0 !important;
   }
 }
+/* =======================================================
+   FINAL & DEFINITIVE CSS MARQUEE FIX (Must be last)
+   ======================================================= */
+@media (max-width: 1023px) {
+    /* This targets the original tablet/mobile rule that broke the horizontal layout 
+       and forces the necessary properties for the JavaScript marquee to function.
+    */
+    .home-clients-track {
+        /* KEY FIX: Forces the track onto a single horizontal line */
+        flex-wrap: nowrap !important; 
+        
+        /* Ensures the scrolling starts at the far left, not centered */
+        justify-content: flex-start !important; 
+        
+        /* Ensures the track width is the sum of all rows */
+        width: max-content !important; 
+        
+        /* Clears any competing transforms from earlier attempts */
+        transform: none !important; 
+        animation: none !important;
+    }
+}
+/* --- Votive Approach Timeline FIX --- */
+.step-icon {
+    /* 🎯 FIX 1: Enable Flexbox */
+    display: flex !important; 
+    /* 🎯 FIX 2: Center horizontally */
+    justify-content: center !important; 
+    /* 🎯 FIX 3: Center vertically */
+    align-items: center !important; 
+    
+    /* Ensure the transform for timeline placement is preserved */
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* ... other existing properties ... */
+}
+/* Ensure the icon size is respected inside the flex container */
+.step-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    /* Remove any potential default vertical alignment issues */
+    vertical-align: middle; 
+}
+
+/* Also apply the flexbox fix to the mobile-specific step icon rule */
+@media (max-width: 767px) {
+    .approach-step:nth-child(odd) .step-icon,
+    .approach-step:nth-child(even) .step-icon {
+        /* Apply centering for the mobile layout */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
