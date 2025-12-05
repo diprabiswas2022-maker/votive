@@ -3690,3 +3690,23 @@ header { z-index: 100100 !important; }
 .home-clients-track {
   transform: translateX(var(--homeLogoOffset, 0)) !important;
 }
+/* === FINAL OVERRIDE: make the client logo strip move on ALL devices === */
+
+/* Base: apply transform from JS everywhere */
+.home-clients-track {
+  transform: translateX(var(--homeLogoOffset, 0)) !important;
+  animation: none !important;            /* kill any old CSS animation */
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  will-change: transform;
+}
+
+/* Extra specificity for mobile/tablet to beat older #home rules */
+@media (max-width: 1023px) {
+  #home .home-clients-track {
+    transform: translateX(var(--homeLogoOffset, 0)) !important;
+    animation: none !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+  }
+}

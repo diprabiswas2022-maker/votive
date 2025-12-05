@@ -332,6 +332,8 @@
 
   /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
+/* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
+
 var strip = document.querySelector(".home-clients-strip");
 var track = strip ? strip.querySelector(".home-clients-track") : null;
 
@@ -357,12 +359,6 @@ if (strip && track) {
   var SPEED = 40; // px per second
 
   function step(timestamp) {
-    // Stop animation if user prefers reduced motion
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      window.requestAnimationFrame(step);
-      return;
-    }
-
     if (lastTime == null) lastTime = timestamp;
     var dt = (timestamp - lastTime) / 1000; // seconds
     lastTime = timestamp;
@@ -378,7 +374,7 @@ if (strip && track) {
         x += rowWidth;
       }
 
-      // ✅ JS controls a CSS variable instead of transform directly
+      // JS controls CSS variable; CSS applies transform
       track.style.setProperty("--homeLogoOffset", x + "px");
     }
 
@@ -415,5 +411,4 @@ if (strip && track) {
     }, 1500);
   }
 }
-
 })();
