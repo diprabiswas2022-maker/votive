@@ -283,9 +283,7 @@ justify-content: center;
 align-items: center;
 flex-grow: 1;
 text-align: center;
-/* Increased opacity of grid lines and brightened the blue center for higher brightness */
-background:
-linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+background:linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
 linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
 radial-gradient(circle at center, #164869, var(--background-color) 80%);
 background-size: 50px 50px, 50px 50px, 100% 100%;
@@ -3865,4 +3863,18 @@ header { z-index: 100100 !important; }
   .home-client-logo img {
     max-height: 38px !important;
   }
+}
+.form-status-msg {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: rgba(238, 246, 251, 0.85);
+}
+body {
+  background-color: #000;
+  background-image:
+    radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(27, 136, 201, 0.10) 0%, transparent 55%),
+    url('grid.png'); /* grid or whatever your bg file name is */
+  background-size: cover, auto;
+  background-attachment: fixed;
+  background-repeat: repeat;
 }

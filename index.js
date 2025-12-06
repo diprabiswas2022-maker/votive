@@ -424,4 +424,31 @@ if (strip && track) {
     }, 1500);
   }
 }
+  /* ---------------------- 6. CONTACT FORM UX (loader/status) ---------------------- */
+  var contactForm = document.querySelector(".contact-form");
+
+  if (contactForm) {
+    var submitBtn = contactForm.querySelector(".submit-button");
+
+    // create a small status text under the button
+    var statusEl = document.createElement("p");
+    statusEl.className = "form-status-msg";
+    statusEl.textContent = "";
+    submitBtn.insertAdjacentElement("afterend", statusEl);
+
+    contactForm.addEventListener("submit", function () {
+      // Disable button & show progress text
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+      statusEl.textContent = "Sending your message…";
+
+      // If it takes long, reassure the user
+      setTimeout(function () {
+        if (document.body.contains(statusEl)) {
+          statusEl.textContent = "Still sending… this may take a few more seconds.";
+        }
+      }, 6000); // 6 seconds
+    });
+  }
 })();
+
