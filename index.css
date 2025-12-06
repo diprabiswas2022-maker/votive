@@ -3994,3 +3994,15 @@ body {
     padding-bottom: 100px !important; /* a bit more than the banner height */
   }
 }
+/* Mobile: reduce gap above copyright and keep it above the blue banner */
+@media (max-width: 767px) {
+  footer {
+    padding-bottom: 80px !important;   /* space so banner doesn't cover text */
+  }
+
+  .footer-bottom {
+    margin-top: 0.75rem !important;    /* was 3rem */
+    padding: 0.5rem 0 0.75rem !important;
+    border-top: 1px solid #333;        /* keep the thin line */
+  }
+}
