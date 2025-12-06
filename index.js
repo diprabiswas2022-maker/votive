@@ -344,8 +344,6 @@
 
 /* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
-/* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
-/* ---------------------- 5. UNIVERSAL CLIENT LOGO MARQUEE ---------------------- */
 
 var strip = document.querySelector(".home-clients-strip");
 var track = strip ? strip.querySelector(".home-clients-track") : null;

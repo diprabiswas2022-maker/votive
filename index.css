@@ -3878,3 +3878,119 @@ body {
   background-attachment: fixed;
   background-repeat: repeat;
 }
+/* === FOOTER: evenly spaced columns & aligned headings === */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 equal columns on desktop */
+  gap: 2.5rem 3rem;                                  /* row / column gaps */
+  align-items: flex-start;                           /* align all to top */
+}
+
+/* Make sure each footer block behaves the same */
+.footer-section {
+  min-width: 0;          /* allows wrapping */
+}
+
+/* Keep it nice on tablet/mobile – stack neatly */
+@media (max-width: 900px) {
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+}
+/* === FOOTER LAYOUT — 5 COLUMNS === */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  gap: 3rem;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Ensure uniform behavior */
+.footer-section {
+  min-width: 0;
+}
+
+.footer-section h2 {
+  margin-bottom: 0.6rem;
+}
+
+/* Tablet: 3 columns */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem 2rem;
+  }
+}
+
+/* Small Tablet / Large Mobile: 2 columns */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 2rem;
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 480px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+/* --- Footer Contact Icons Alignment Fix --- */
+
+/* Make all items in Contact Info align in a clean row */
+.footer-section.contact-info-footer span,
+.contact-details-list .contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.4rem 0;
+}
+
+/* Standardize icon size */
+.footer-section.contact-info-footer svg,
+.contact-details-list .contact-item svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+/* Ensure text aligns well without stretching column */
+.footer-section.contact-info-footer a,
+.footer-section.contact-info-footer div,
+.footer-section.contact-info-footer p {
+  line-height: 1.25rem;
+  margin: 0;
+}
+
+/* Remove extra margins added by browser styles */
+.contact-details-list p,
+.contact-details-list a {
+  margin: 0;
+  padding: 0;
+}
+
+/* Tighten spacing between each list item */
+.contact-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Extra space so copyright isn't hidden behind mobile contact banner */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 110px !important; /* a bit more than the banner height */
+  }
+}
