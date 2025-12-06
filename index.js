@@ -1,6 +1,16 @@
 // index.js (Complete File with "full-page" detail views)
 
 (function () {
+  // Force first-time load to always show Home
+if (!sessionStorage.getItem("visited")) {
+  sessionStorage.setItem("visited", "true");
+  if (window.location.hash !== "#home") {
+    window.location.replace(
+      window.location.origin + window.location.pathname + "#home"
+    );
+  }
+}
+
   var header = document.querySelector("header");
   var pages = document.querySelectorAll(".page");
   var navLinks = document.querySelectorAll("header nav a[href^='#']");
