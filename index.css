@@ -3991,6 +3991,6 @@ body {
 /* Extra space so copyright isn't hidden behind mobile contact banner */
 @media (max-width: 767px) {
   body {
-    padding-bottom: 120px !important; /* a bit more than the banner height */
+    padding-bottom: 100px !important; /* a bit more than the banner height */
   }
 }
